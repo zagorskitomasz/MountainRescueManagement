@@ -1,7 +1,7 @@
 # MountainRescueManagment
 CRUD based web app (Spring + Hibernate + Bootstrap)
 
-Application for mountain rescue managment.
+Application for mountain rescue management.
 
 Requirements:
 - Adding/removing rescuers in database
