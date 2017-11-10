@@ -1,4 +1,4 @@
-# MountainRescueManagment
+# MountainRescueManagement
 CRUD based web app (Spring + Hibernate + Bootstrap)
 
 Application for mountain rescue management.
