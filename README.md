@@ -16,13 +16,17 @@
 - Bootstrap
 
 # Done:
-1. database (rescuer, action, join table),
+- database (rescuer, action, details, join table)
+- springboot starter project
+- config
+- entities
+- DAOs (generic abstract + interfaces + implementations)
+- services
 
 # TODO:
-2. springboot starter project,
-3. hibernate config,
-4. model,
-5. controllers,
-6. Bootstrap views,
-7. security
-8. deploy
+- controllers
+- bootstrap views
+- debug
+- security
+- security debug
+- deploy
