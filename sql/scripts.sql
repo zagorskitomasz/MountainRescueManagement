@@ -22,7 +22,7 @@ CREATE TABLE rescuer (
   id int(11) NOT NULL AUTO_INCREMENT,
   first_name varchar(45) DEFAULT NULL,
   last_name varchar(45) DEFAULT NULL,
-  state enum('available', 'call', 'action', 'retired') DEFAULT NULL,
+  state varchar(45) DEFAULT NULL,
   rescuer_detail_id int(11) DEFAULT NULL,
   PRIMARY KEY (id),
   KEY FK_DETAIL_idx (rescuer_detail_id),
@@ -46,8 +46,8 @@ DROP TABLE IF EXISTS operation;
 
 CREATE TABLE operation (
   id int(11) NOT NULL AUTO_INCREMENT,
-  destination varchar(45) DEFAULT NULL,
-  present boolean DEFAULT TRUE,
+  destination varchar(100) DEFAULT NULL,
+  state varchar(45) DEFAULT NULL,
   operation_detail_id int(11) DEFAULT NULL,
   PRIMARY KEY (id),
   KEY FK_OPDETAIL_idx (operation_detail_id),
