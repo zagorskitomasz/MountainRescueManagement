@@ -22,9 +22,9 @@
 - entities
 - DAOs (generic abstract + interfaces + implementations)
 - services
+- controllers
 
 # TODO:
-- controllers
 - bootstrap views
 - debug
 - security
