@@ -45,6 +45,8 @@ public class Operation {
 			inverseJoinColumns = @JoinColumn(name="rescuer_id"))
 	private List<Rescuer> rescuers;
 	
+	private String[] states = {"current", "past"};
+	
 	public Operation() {}
 
 	public Operation(String destination) {
@@ -97,5 +99,13 @@ public class Operation {
 
 	public void setRescuers(List<Rescuer> rescuers) {
 		this.rescuers = rescuers;
+	}
+
+	public String[] getStates() {
+		return states;
+	}
+
+	public void setStates(String[] states) {
+		this.states = states;
 	}
 }

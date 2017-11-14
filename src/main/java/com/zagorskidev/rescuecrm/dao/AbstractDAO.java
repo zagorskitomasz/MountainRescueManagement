@@ -33,7 +33,8 @@ public abstract class AbstractDAO<Type>{
 	public Type get(int id) {
 		
 		Session currentSession = sessionFactory.getCurrentSession();
-		return currentSession.get(persistentClass, id);
+		Type item = currentSession.get(persistentClass, id);
+		return addLazyData(item);
 	}
 
 	public void persist(Type item) {
@@ -49,4 +50,6 @@ public abstract class AbstractDAO<Type>{
 		query.setParameter("itemId", id);
 		query.executeUpdate();
 	}
+	
+	public abstract Type addLazyData(Type item);
 }
