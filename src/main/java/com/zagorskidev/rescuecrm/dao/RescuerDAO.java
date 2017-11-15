@@ -10,5 +10,6 @@ public interface RescuerDAO {
 	public List<Rescuer> getSpecific(String state);
 	public Rescuer get(int id);
 	public void persist(Rescuer rescuer);
+	public void merge(Rescuer rescuer);
 	public void delete(int id);
 }

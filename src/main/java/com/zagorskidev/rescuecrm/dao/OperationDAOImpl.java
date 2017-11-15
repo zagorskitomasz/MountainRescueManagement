@@ -2,8 +2,9 @@ package com.zagorskidev.rescuecrm.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,20 +16,23 @@ import com.zagorskidev.rescuecrm.entity.OperationDetail;
 public class OperationDAOImpl extends AbstractDAO<Operation> implements OperationDAO {
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Operation> getSpecific(String state) {
 		
-		Session currentSession = getSessionFactory().getCurrentSession();
-		Query<Operation> query = currentSession
-				.createQuery("from Operation where state=:itemState order by id desc", Operation.class)
-				.setParameter("itemState", state);
+		EntityManager entityManager = getEntityManager();
+		Query query = entityManager
+				.createQuery("from Operation where state=:itemState order by id desc", Operation.class);
+		query.setParameter("itemState", state);
+		
 		return query.getResultList();
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Operation> getAll() {
 		
-		Session currentSession = getSessionFactory().getCurrentSession();
-		Query<Operation> query = currentSession
+		EntityManager entityManager = getEntityManager();
+		Query query = entityManager
 				.createQuery("from Operation order by id desc", Operation.class);
 		return query.getResultList();
 	}

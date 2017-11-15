@@ -2,11 +2,13 @@ package com.zagorskidev.rescuecrm.dao;
 
 import java.lang.reflect.ParameterizedType;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 
+import org.springframework.transaction.annotation.Transactional;
+
+@Transactional
 public abstract class AbstractDAO<Type>{
 
     private final Class<Type> persistentClass;
@@ -22,31 +24,33 @@ public abstract class AbstractDAO<Type>{
         this.typeArgName = this.persistentClass.getSimpleName();
     }
 	
-	@Autowired
-	private SessionFactory sessionFactory;
-	
-	protected SessionFactory getSessionFactory() {
+    @PersistenceContext
+	private EntityManager entityManager;
+    
+	protected EntityManager getEntityManager() {
 		
-		return this.sessionFactory;
+		return this.entityManager;
 	}
 	
 	public Type get(int id) {
 		
-		Session currentSession = sessionFactory.getCurrentSession();
-		Type item = currentSession.get(persistentClass, id);
+		Type item = entityManager.find(persistentClass, id);
 		return addLazyData(item);
 	}
 
 	public void persist(Type item) {
 		
-		Session currentSession = sessionFactory.getCurrentSession();
-		currentSession.persist(item);
+		entityManager.persist(item);
+	}
+	
+	public void merge(Type item) {
+		
+		entityManager.merge(item);
 	}
 
 	public void delete(int id) {
 
-		Session currentSession = sessionFactory.getCurrentSession();
-		Query<?> query = currentSession.createQuery("delete " +typeArgName+ " where id=:itemId");
+		Query query = entityManager.createQuery("delete " +typeArgName+ " where id=:itemId");
 		query.setParameter("itemId", id);
 		query.executeUpdate();
 	}

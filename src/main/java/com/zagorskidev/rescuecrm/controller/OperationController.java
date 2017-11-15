@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.OperationDetail;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
+import com.zagorskidev.rescuecrm.entity.States;
 import com.zagorskidev.rescuecrm.service.OperationService;
 import com.zagorskidev.rescuecrm.service.RescuerService;
 
@@ -26,6 +27,9 @@ public class OperationController {
 	
 	@Autowired
 	private RescuerService rescuerService;
+	
+	@Autowired
+	private States states;
 	
 	@GetMapping("/all")
 	public String showAllOperations(Model model) {
@@ -74,6 +78,7 @@ public class OperationController {
 		
 		model.addAttribute("operation", operation);
 		model.addAttribute("candidates", candidates);
+		model.addAttribute("states", states.getOperationStates());
 		
 		return "operation-form";
 	}
@@ -87,6 +92,7 @@ public class OperationController {
 		
 		model.addAttribute("operation", operation);
 		model.addAttribute("candidates", candidates);
+		model.addAttribute("states", states.getOperationStates());
 		
 		return "add-rescuers-form";
 	}
@@ -100,6 +106,7 @@ public class OperationController {
 		
 		model.addAttribute("operation", operation);
 		model.addAttribute("candidates", candidates);
+		model.addAttribute("states", states.getOperationStates());
 		
 		return "operation-form";
 	}
@@ -108,6 +115,13 @@ public class OperationController {
 	public String saveOperation(@ModelAttribute("operation") Operation operation, Model model) {
 
 		addCommander(operation);
+		
+		List<Rescuer> rescuers = operation.getRescuers();
+		
+		for(Rescuer rescuer : rescuers) {
+			rescuer.setState("busy");
+			rescuerService.updateRescuer(rescuer);
+		}
 		
 		if(operation.getId()>0)
 			operationService.updateOperation(operation);
@@ -123,17 +137,31 @@ public class OperationController {
 		
 		Rescuer rescuer = rescuerService.getRescuerById(id);
 		operation.getRescuers().remove(rescuer);
+		rescuer.setState("available");
+		rescuerService.updateRescuer(rescuer);
 		
 		List<Rescuer> candidates = selectCandidates(operation);
 		
 		model.addAttribute("operation", operation);
 		model.addAttribute("candidates", candidates);
+		model.addAttribute("states", states.getOperationStates());
 		
 		return "operation-form";
 	}
 	
 	@GetMapping("/delete")
 	public String deleteOperation(@RequestParam("operationId") int id, Model model) {
+		
+		Operation operation = operationService.getOperationById(id);
+		
+		List<Rescuer> rescuers = operation.getRescuers();
+		
+		for(Rescuer rescuer : rescuers) {
+			if(rescuer.getState().equals("busy")) {
+				rescuer.setState("available");
+				rescuerService.updateRescuer(rescuer);
+			}
+		}
 		
 		operationService.removeOperation(id);
 		

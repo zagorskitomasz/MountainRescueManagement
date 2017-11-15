@@ -10,5 +10,6 @@ public interface OperationDAO {
 	public List<Operation> getSpecific(String state);
 	public Operation get(int id);
 	public void persist(Operation operation);
+	public void merge(Operation operation);
 	public void delete(int id);
 }

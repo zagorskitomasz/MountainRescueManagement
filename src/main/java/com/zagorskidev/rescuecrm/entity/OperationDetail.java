@@ -23,17 +23,14 @@ public class OperationDetail {
 	@Column(name="description")
 	private String description;
 	
-	@OneToOne(mappedBy="operationDetail", cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH})
+	@OneToOne(mappedBy="operationDetail", cascade=CascadeType.ALL)
 	private Operation operation;
 	
 	@ManyToOne(cascade= {CascadeType.DETACH,
 			CascadeType.MERGE,
 			CascadeType.PERSIST,
 			CascadeType.REFRESH})
-	@JoinColumn(name="rescuer_id")
+	@JoinColumn(name="commander_id")
 	private Rescuer rescuer;
 	
 	public OperationDetail() {}

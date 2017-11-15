@@ -56,8 +56,6 @@ public class Rescuer {
 			fetch=FetchType.LAZY)
 	private List<OperationDetail> operationDetails;
 
-	private String[] states = {"available", "busy", "oncall", "retired"};
-	
 	public Rescuer() {}
 
 	public Rescuer(String firstName, String lastName) {
@@ -134,13 +132,5 @@ public class Rescuer {
 
 	public void setOperationDetails(List<OperationDetail> operationDetails) {
 		this.operationDetails = operationDetails;
-	}
-
-	public String[] getStates() {
-		return states;
-	}
-
-	public void setStates(String[] states) {
-		this.states = states;
 	}
 }

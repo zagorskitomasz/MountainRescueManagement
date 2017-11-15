@@ -3,10 +3,12 @@ package com.zagorskidev.rescuecrm.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.RescuerDAO;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 
+@Service
 public class RescuerServiceImpl implements RescuerService {
 
 	@Autowired
@@ -57,7 +59,7 @@ public class RescuerServiceImpl implements RescuerService {
 	@Override
 	public void updateRescuer(Rescuer rescuer) {
 		
-		rescuerDAO.persist(rescuer);
+		rescuerDAO.merge(rescuer);
 	}
 
 	@Override

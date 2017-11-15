@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
+import com.zagorskidev.rescuecrm.entity.States;
 import com.zagorskidev.rescuecrm.service.RescuerService;
 
 @Controller
@@ -21,6 +22,9 @@ public class RescuerController {
 
 	@Autowired
 	private RescuerService rescuerService;
+	
+	@Autowired
+	private States states;
 	
 	@GetMapping("/all")
 	public String showAllRescuers(Model model) {
@@ -83,6 +87,7 @@ public class RescuerController {
 		rescuer.setRescuerDetail(rescuerDetail);
 		
 		model.addAttribute("rescuer", rescuer);
+		model.addAttribute("states", states.getRescuerStates());
 		
 		return "rescuer-form";
 	}
@@ -93,6 +98,7 @@ public class RescuerController {
 		Rescuer rescuer = rescuerService.getRescuerById(id);
 		
 		model.addAttribute("rescuer", rescuer);
+		model.addAttribute("states", states.getRescuerStates());
 		
 		return "rescuer-form";
 	}

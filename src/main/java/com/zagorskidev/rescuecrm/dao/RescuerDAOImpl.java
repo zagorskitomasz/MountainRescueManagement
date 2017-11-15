@@ -2,8 +2,9 @@ package com.zagorskidev.rescuecrm.dao;
 
 import java.util.List;
 
-import org.hibernate.Session;
-import org.hibernate.query.Query;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,20 +16,22 @@ import com.zagorskidev.rescuecrm.entity.Rescuer;
 public class RescuerDAOImpl extends AbstractDAO<Rescuer> implements RescuerDAO {
 
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Rescuer> getSpecific(String state) {
 		
-		Session currentSession = getSessionFactory().getCurrentSession();
-		Query<Rescuer> query = currentSession
+		EntityManager entityManager = getEntityManager();
+		Query query = entityManager
 				.createQuery("from Rescuer where state=:itemState order by lastName", Rescuer.class)
 				.setParameter("itemState", state);
 		return query.getResultList();
 	}
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public List<Rescuer> getAll() {
 		
-		Session currentSession = getSessionFactory().getCurrentSession();
-		Query<Rescuer> query = currentSession
+		EntityManager entityManager = getEntityManager();
+		Query query = entityManager
 				.createQuery("from Rescuer where state!=:notAvailable order by lastName", Rescuer.class)
 				.setParameter("notAvailable", "N/A");
 		return query.getResultList();

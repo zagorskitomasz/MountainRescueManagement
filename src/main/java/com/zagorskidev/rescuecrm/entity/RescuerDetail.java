@@ -24,13 +24,10 @@ public class RescuerDetail {
 	@Column(name="email")
 	private String email;
 	
-	@Column(name="phone")
+	@Column(name="phone_number")
 	private String phone;
 	
-	@OneToOne(mappedBy="rescuerDetail", cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH})
+	@OneToOne(mappedBy="rescuerDetail", cascade=CascadeType.ALL)
 	private Rescuer rescuer;
 	
 	public RescuerDetail() {}

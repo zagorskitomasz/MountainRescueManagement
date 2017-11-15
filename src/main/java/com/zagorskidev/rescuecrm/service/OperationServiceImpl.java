@@ -3,10 +3,12 @@ package com.zagorskidev.rescuecrm.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.OperationDAO;
 import com.zagorskidev.rescuecrm.entity.Operation;
 
+@Service
 public class OperationServiceImpl implements OperationService {
 
 	@Autowired
@@ -45,7 +47,7 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public void updateOperation(Operation operation) {
 		
-		operationDAO.persist(operation);
+		operationDAO.merge(operation);
 	}
 
 	@Override
