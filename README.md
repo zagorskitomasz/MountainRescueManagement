@@ -25,8 +25,8 @@
 - controllers
 
 # TODO:
-- bootstrap views
-- debug
+- frontend (in progress)
+- debug (in progress)
 - security
 - security debug
 - deploy
