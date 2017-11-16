@@ -7,8 +7,9 @@
 	<body>
 		<jsp:include page="/WEB-INF/view/templates/navbar.jsp"></jsp:include>
     	<div class="container">
-    		<h1>Rescuers List</h1>
-    		
+    	<div class="page-header">
+    		<h1>${listVersion} Rescuers List</h1>
+    	</div>	
     		<div class="table-responsive">
   				<table class="table table-bordered table-striped">
     				<thead>
@@ -16,7 +17,7 @@
     						<th>First Name</th>
     						<th>Last Name</th>
     						<th>State</th>
-    						<th colspan="2">Actions</th>
+    						<th>Actions</th>
     					</tr>
     				</thead>
     				<tbody>
@@ -30,12 +31,19 @@
 					<c:param name="rescuerId" value="${rescuer.id}" />
 					</c:url>
 					
+    				<c:url var="deleteLink" value="/rescuer/deleteConfirmation">
+					<c:param name="rescuerId" value="${rescuer.id}" />
+					</c:url>
+					
     					<tr>
     						<td>${rescuer.firstName }</td>
     						<td>${rescuer.lastName }</td>
     						<td>${rescuer.state }</td>
-    						<td><button type="button" class="btn btn-success" onclick="location.href='${detailsLink}'">Details</button></td>
-    						<td><button type="button" class="btn btn-info" onclick="location.href='${updateLink}'">Update</button></td>
+    						<td><div class="btn-group" role="group" aria-label="...">
+    						<button type="button" class="btn btn-success active" onclick="location.href='${detailsLink}'">Details</button>
+    						<button type="button" class="btn btn-warning active" onclick="location.href='${updateLink}'">Update</button>
+    						<button type="button" class="btn btn-danger active" onclick="location.href='${deleteLink}'">Delete</button>
+    						</div></td>
     					</tr>
     				</c:forEach>
     				</tbody>

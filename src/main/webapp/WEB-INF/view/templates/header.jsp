@@ -13,4 +13,8 @@
     <!-- Bootstrap -->
     <link href="${bootstrapMinUrl }" rel="stylesheet">
     <link href="${mytemplateUrl }" rel="stylesheet">
+    
+    <style>
+		.error {color:red}
+	</style>
   </head>
