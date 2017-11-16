@@ -1,16 +1,25 @@
 package com.zagorskidev.rescuecrm.controller;
 
+import java.util.LinkedList;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.StringTrimmerEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.zagorskidev.rescuecrm.entity.Operation;
+import com.zagorskidev.rescuecrm.entity.OperationDetail;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 import com.zagorskidev.rescuecrm.entity.States;
@@ -31,6 +40,7 @@ public class RescuerController {
 		
 		List<Rescuer> rescuers = rescuerService.getAllRescuers();
 		model.addAttribute("rescuers", rescuers);
+		model.addAttribute("listVersion", "All");
 		
 		return "list-rescuers";
 	}
@@ -40,6 +50,7 @@ public class RescuerController {
 		
 		List<Rescuer> rescuers = rescuerService.getAvailableRescuers();
 		model.addAttribute("rescuers", rescuers);
+		model.addAttribute("listVersion", "Available");
 		
 		return "list-rescuers";
 	}
@@ -49,6 +60,7 @@ public class RescuerController {
 		
 		List<Rescuer> rescuers = rescuerService.getBusyRescuers();
 		model.addAttribute("rescuers", rescuers);
+		model.addAttribute("listVersion", "Busy");
 		
 		return "list-rescuers";
 	}
@@ -58,6 +70,7 @@ public class RescuerController {
 		
 		List<Rescuer> rescuers = rescuerService.getOnCallRescuers();
 		model.addAttribute("rescuers", rescuers);
+		model.addAttribute("listVersion", "On Call");
 		
 		return "list-rescuers";
 	}
@@ -67,6 +80,7 @@ public class RescuerController {
 		
 		List<Rescuer> rescuers = rescuerService.getRetiredRescuers();
 		model.addAttribute("rescuers", rescuers);
+		model.addAttribute("listVersion", "Retired");
 		
 		return "list-rescuers";
 	}
@@ -88,6 +102,7 @@ public class RescuerController {
 		
 		model.addAttribute("rescuer", rescuer);
 		model.addAttribute("states", states.getRescuerStates());
+		model.addAttribute("formVersion", "Add");
 		
 		return "rescuer-form";
 	}
@@ -99,19 +114,35 @@ public class RescuerController {
 		
 		model.addAttribute("rescuer", rescuer);
 		model.addAttribute("states", states.getRescuerStates());
+		model.addAttribute("formVersion", "Update");
 		
 		return "rescuer-form";
 	}
 	
 	@PostMapping("/save")
-	public String saveRescuer(@ModelAttribute("rescuer") Rescuer rescuer) {
+	public String saveRescuer(@Valid @ModelAttribute("rescuer") Rescuer rescuer, BindingResult bindingResult, Model model) {
 		
-		if(rescuer.getId()>0)
-			rescuerService.updateRescuer(rescuer);
-		else
-			rescuerService.addRescuer(rescuer);
+		if(bindingResult.hasErrors()) {
+			model.addAttribute("states", states.getRescuerStates());
+			return "rescuer-form";
+		}
+		else {
+			if(rescuer.getId()>0)
+				rescuerService.updateRescuer(rescuer);
+			else
+				rescuerService.addRescuer(rescuer);
+			
+			return "redirect:/rescuer/all";
+		}
+	}
+	
+	@GetMapping("/deleteConfirmation")
+	public String showDeleteConfirmation(@RequestParam("rescuerId") int id, Model model) {
 		
-		return "redirect:/rescuer/all";
+		Rescuer rescuer = rescuerService.getRescuerById(id);
+		model.addAttribute("rescuer", rescuer);
+		
+		return "delete-rescuer-confirm";
 	}
 	
 	@GetMapping("/delete")
@@ -127,6 +158,35 @@ public class RescuerController {
 		return "redirect:/rescuer/all";
 	}
 	
+	@GetMapping("/operations")
+	public String showOperations(@RequestParam("rescuerId") int id, Model model) {
+		
+		Rescuer rescuer = rescuerService.getRescuerById(id);
+		List<Operation> operations = rescuer.getOperations();
+		
+		model.addAttribute("operations", operations);
+		model.addAttribute("listTitle", "Operations of "+rescuer.getFirstName()+" "+rescuer.getLastName());
+		
+		return "list-operations";
+	}
+	
+	@GetMapping("/commanded")
+	public String showCommandedOperations(@RequestParam("rescuerId") int id, Model model) {
+		
+		Rescuer rescuer = rescuerService.getRescuerById(id);
+		List<OperationDetail> operationDetails = rescuer.getOperationDetails();
+		
+		List<Operation> operations = new LinkedList<>();
+		
+		for(OperationDetail operationDetail : operationDetails)
+			operations.add(operationDetail.getOperation());
+		
+		model.addAttribute("operations", operations);
+		model.addAttribute("listTitle", "Operations commanded by "+rescuer.getFirstName()+" "+rescuer.getLastName());
+		
+		return "list-operations";
+	}
+	
 	private void anonimize(Rescuer rescuer) {
 		
 		rescuer.setFirstName("N/A");
@@ -139,5 +199,12 @@ public class RescuerController {
 		rescuerDetail.setPhone("N/A");
 		
 		rescuerService.updateRescuer(rescuer);
+	}
+	
+	@InitBinder
+	public void initBinder(WebDataBinder dataBinder) {
+		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
+		
+		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
 	}
 }

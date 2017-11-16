@@ -21,20 +21,20 @@ public class RescuerDAOImpl extends AbstractDAO<Rescuer> implements RescuerDAO {
 		
 		EntityManager entityManager = getEntityManager();
 		Query query = entityManager
-				.createQuery("from Rescuer where state=:itemState order by lastName", Rescuer.class)
+				.createQuery("from Rescuer where state=:itemState order by lastName, firstName", Rescuer.class)
 				.setParameter("itemState", state);
 		return query.getResultList();
 	}
 	
 	@Override
-	@SuppressWarnings("unchecked")
 	public List<Rescuer> getAll() {
 		
-		EntityManager entityManager = getEntityManager();
-		Query query = entityManager
-				.createQuery("from Rescuer where state!=:notAvailable order by lastName", Rescuer.class)
-				.setParameter("notAvailable", "N/A");
-		return query.getResultList();
+		List<Rescuer> rescuers = getSpecific("available");
+		rescuers.addAll(getSpecific("oncall"));
+		rescuers.addAll(getSpecific("busy"));
+		rescuers.addAll(getSpecific("retired"));
+		
+		return rescuers;
 	}
 	
 	@Override

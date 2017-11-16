@@ -8,6 +8,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.Email;
 
 @Entity
 @Table(name="rescuer_detail")
@@ -19,12 +24,16 @@ public class RescuerDetail {
 	private int id;
 	
 	@Column(name="address")
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String address;
 	
 	@Column(name="email")
+	@Email
 	private String email;
 	
 	@Column(name="phone_number")
+	@Pattern(regexp="^[0-9]{9}", message="9 digits required")
 	private String phone;
 	
 	@OneToOne(mappedBy="rescuerDetail", cascade=CascadeType.ALL)
