@@ -1,13 +1,12 @@
-# CRUD web application for mountain rescue operations management.
+# Web application for mountain rescue operations management.
+Now it's simple but working prototype.
 
-# Requirements:
-- Adding/removing rescuers in database
-- Tracking rescuers on duty, on action and on leave
-- Creating rescue operation (assingning commander + rescuers)
-- Tracking operations
-- Archive of past operations and retired rescuers
-- Analyzing data about operation, results, most active rescuers, commanders etc.
-- Different roles of users: guest (access only to rescuers list), user (access to operations and rescuers details), officer (creating and managing operations, adding and removing rescuers)
+I'm going to continuously develop application (add new features) while keeping code as clean as possible and open for further extensions.
+
+# Features:
+- CRUD: rescuers and operations
+- Many to many rescuer-operation relationship
+- Each operation contains 3 rescuers
 
 # Technologies:
 - Spring (Boot, MVC, Security)
@@ -15,18 +14,6 @@
 - MySQL
 - Bootstrap
 
-# Done:
-- database (rescuer, action, details, join table)
-- springboot starter project
-- config
-- entities
-- DAOs (generic abstract + interfaces + implementations)
-- services
-- controllers
-
 # TODO:
-- frontend (in progress)
-- debug (in progress)
 - security
-- security debug
-- deploy
+- further development
