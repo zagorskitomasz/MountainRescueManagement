@@ -21,30 +21,6 @@ public class RescuerServiceImpl implements RescuerService {
 	}
 
 	@Override
-	public List<Rescuer> getAvailableRescuers() {
-		
-		return rescuerDAO.getSpecific("available");
-	}
-
-	@Override
-	public List<Rescuer> getBusyRescuers() {
-		
-		return rescuerDAO.getSpecific("busy");
-	}
-
-	@Override
-	public List<Rescuer> getOnCallRescuers() {
-		
-		return rescuerDAO.getSpecific("oncall");
-	}
-
-	@Override
-	public List<Rescuer> getRetiredRescuers() {
-		
-		return rescuerDAO.getSpecific("retired");
-	}
-
-	@Override
 	public Rescuer getRescuerById(int id) {
 		
 		return rescuerDAO.get(id);

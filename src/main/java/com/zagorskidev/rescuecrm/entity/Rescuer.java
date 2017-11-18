@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.Valid;
@@ -39,30 +38,17 @@ public class Rescuer {
 	@Size(min=1, message="is required")
 	private String lastName;
 	
-	@Column(name="state")
-	private String state;
-	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="rescuer_detail_id")
 	@Valid
 	private RescuerDetail rescuerDetail;
 	
-	@ManyToMany(cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch=FetchType.LAZY)
+	@ManyToMany(cascade= {},
+			fetch=FetchType.EAGER)
 	@JoinTable(name="operation_rescuer",
 			joinColumns = @JoinColumn(name="rescuer_id"),
 			inverseJoinColumns = @JoinColumn(name="operation_id"))
 	private List<Operation> operations;
-	
-	@OneToMany(mappedBy="rescuer", cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch=FetchType.LAZY)
-	private List<OperationDetail> operationDetails;
 
 	public Rescuer() {}
 
@@ -77,13 +63,6 @@ public class Rescuer {
 			operations = new LinkedList<>();
 		
 		operations.add(operation);
-	}
-	
-	public void addOperationDetail(OperationDetail operationDetail) {
-		if(operationDetails==null)
-			operationDetails = new LinkedList<>();
-		
-		operationDetails.add(operationDetail);
 	}
 
 	public int getId() {
@@ -110,14 +89,6 @@ public class Rescuer {
 		this.lastName = lastName;
 	}
 
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String state) {
-		this.state = state;
-	}
-
 	public RescuerDetail getRescuerDetail() {
 		return rescuerDetail;
 	}
@@ -133,12 +104,10 @@ public class Rescuer {
 	public void setOperations(List<Operation> operations) {
 		this.operations = operations;
 	}
-
-	public List<OperationDetail> getOperationDetails() {
-		return operationDetails;
-	}
-
-	public void setOperationDetails(List<OperationDetail> operationDetails) {
-		this.operationDetails = operationDetails;
+	
+	@Override
+	public String toString() {
+		
+		return this.firstName+" "+this.lastName;
 	}
 }

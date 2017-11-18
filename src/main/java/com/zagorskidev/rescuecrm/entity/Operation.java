@@ -15,6 +15,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name="operation")
@@ -25,21 +28,18 @@ public class Operation {
 	@Column(name="id")
 	private int id;
 	
-	@Column(name="state")
-	private String state;
-	
 	@Column(name="destination")
+	@NotNull(message="is required")
+	@Size(min=1, message="is required")
 	private String destination;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	@JoinColumn(name="operation_detail_id")
+	@Valid
 	private OperationDetail operationDetail;
 	
-	@ManyToMany(cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH},
-			fetch=FetchType.LAZY)
+	@ManyToMany(cascade= {},
+			fetch=FetchType.EAGER)
 	@JoinTable(name="operation_rescuer",
 			joinColumns = @JoinColumn(name="operation_id"),
 			inverseJoinColumns = @JoinColumn(name="rescuer_id"))
@@ -65,14 +65,6 @@ public class Operation {
 
 	public void setId(int id) {
 		this.id = id;
-	}
-
-	public String getState() {
-		return state;
-	}
-
-	public void setState(String present) {
-		this.state = present;
 	}
 
 	public String getDestination() {

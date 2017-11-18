@@ -6,8 +6,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -26,19 +24,11 @@ public class OperationDetail {
 	@OneToOne(mappedBy="operationDetail", cascade=CascadeType.ALL)
 	private Operation operation;
 	
-	@ManyToOne(cascade= {CascadeType.DETACH,
-			CascadeType.MERGE,
-			CascadeType.PERSIST,
-			CascadeType.REFRESH})
-	@JoinColumn(name="commander_id")
-	private Rescuer rescuer;
-	
 	public OperationDetail() {}
 
-	public OperationDetail(String description, Rescuer rescuer) {
+	public OperationDetail(String description) {
 		super();
 		this.description = description;
-		this.rescuer = rescuer;
 	}
 
 	public int getId() {
@@ -63,13 +53,5 @@ public class OperationDetail {
 
 	public void setOperation(Operation operation) {
 		this.operation = operation;
-	}
-
-	public Rescuer getRescuer() {
-		return rescuer;
-	}
-
-	public void setRescuer(Rescuer rescuer) {
-		this.rescuer = rescuer;
 	}
 }

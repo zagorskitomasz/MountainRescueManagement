@@ -21,18 +21,6 @@ public class OperationServiceImpl implements OperationService {
 	}
 
 	@Override
-	public List<Operation> getCurrentOperations() {
-		
-		return operationDAO.getSpecific("current");
-	}
-
-	@Override
-	public List<Operation> getPastOperations() {
-		
-		return operationDAO.getSpecific("past");
-	}
-
-	@Override
 	public Operation getOperationById(int id) {
 		
 		return operationDAO.get(id);

@@ -35,7 +35,7 @@ public abstract class AbstractDAO<Type>{
 	public Type get(int id) {
 		
 		Type item = entityManager.find(persistentClass, id);
-		return addLazyData(item);
+		return item;
 	}
 
 	public void persist(Type item) {
@@ -54,6 +54,4 @@ public abstract class AbstractDAO<Type>{
 		query.setParameter("itemId", id);
 		query.executeUpdate();
 	}
-	
-	public abstract Type addLazyData(Type item);
 }
