@@ -1,3 +1,5 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
 	 <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
@@ -25,6 +27,17 @@
             </li>
             <li><a href="/operation/create">Create Operation</a></li>
           </ul>
+        <div class="collapse navbar-collapse navbar-right">
+        	<sec:authorize access="isAnonymous()">
+        		<button type="button" onclick="location.href='/login'" class="btn btn-primary navbar-btn">Log In</button>
+        	</sec:authorize>
+        	<sec:authorize access="isAuthenticated()">
+        		<button type="button" onclick="location.href='/logout'" class="btn btn-default navbar-btn">Log Out</button>
+      		</sec:authorize>
+        </div>
+          <div class="collapse navbar-collapse navbar-right">
+          	<p class="navbar-text">Hello <Strong>${loggedUserName}</Strong>!</p>
+          </div>
         </div>
       </div>
     </nav>

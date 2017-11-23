@@ -7,10 +7,9 @@
     	<div class="page-header">
     		<h1>Mountain Rescue Management</h1>
     		</div>
-    		
-    		Management system for mountain rescue organizations.
+    		Management system for mountain rescue organization.
     		<br><br>
-    		<Strong>Better management for better operations.</Strong>
+    		<img src="/resources/static/images/rescue.jpg" class="img-responsive" width="700"/>
     	</div>
 
 		<jsp:include page="/WEB-INF/view/templates/footer.jsp"></jsp:include>

@@ -8,26 +8,19 @@
 		<jsp:include page="/WEB-INF/view/templates/navbar.jsp"></jsp:include>
     	<div class="container">
     	<div class="page-header">
-    		<h1>Delete Rescuer Confirmation</h1>
+    		<h1>Access Denied</h1>
     		</div>
     	</div>
     	<div class="container theme-showcase" role="main">
     <div class="alert alert-danger" role="alert">
-         Do you want to delete rescuer <strong>${rescuer}</strong>?
+         Sorry <Strong>${userName }</Strong>, you have no permission to access this page...
       </div>
       
-          			<c:url var="listLink" value="/rescuer/all">
-					</c:url>
-					
-    				<c:url var="deleteLink" value="/rescuer/delete">
-					<c:param name="rescuerId" value="${rescuer.id}" />
+          			<c:url var="homeLink" value="/home">
 					</c:url>
       
-
-    <div class="btn-group" role="group" aria-label="...">
-	<button type="button" onclick="location.href='${listLink}'" class="btn btn-default ">Cancel</button>
-	<button type="button" onclick="location.href='${deleteLink}'" class="btn btn-danger ">Delete</button>
-	</div>
+	<button type="button" onclick="location.href='${homeLink}'" class="btn btn-default ">Home</button>
+	
 
 </div>
 		<jsp:include page="/WEB-INF/view/templates/footer.jsp"></jsp:include>

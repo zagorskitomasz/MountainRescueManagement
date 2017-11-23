@@ -24,8 +24,8 @@
 					</c:url>
       
     <div class="btn-group" role="group" aria-label="...">
-	<button type="button" onclick="location.href='${listLink}'" class="btn btn-default active">Cancel</button>
-	<button type="button" onclick="location.href='${deleteLink}'" class="btn btn-danger active">Delete</button>
+	<button type="button" onclick="location.href='${listLink}'" class="btn btn-default ">Cancel</button>
+	<button type="button" onclick="location.href='${deleteLink}'" class="btn btn-danger ">Delete</button>
 	</div>
 	
 </div>

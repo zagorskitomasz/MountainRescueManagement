@@ -54,8 +54,8 @@
    			
     			<div class="col-sm-offset-2 col-sm-4">
     			<div class="btn-group" role="group" aria-label="...">
-      				<input type="submit" class="btn btn-success active" value="Save"/>
-      				<button type="button" onclick="location.href='/rescuer/all'" class="btn btn-default active">Cancel</button>
+      				<input type="submit" class="btn btn-success " value="Save"/>
+      				<button type="button" onclick="location.href='/rescuer/all'" class="btn btn-default ">Cancel</button>
     			</div>
     			</div>
   			</div>

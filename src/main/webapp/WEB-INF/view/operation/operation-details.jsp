@@ -41,9 +41,9 @@
 					
     					
     						<div class="btn-group" role="group" aria-label="...">
-    						<button type="button" class="btn btn-primary active" onclick="location.href='${backLink}'">Back</button>
-    						<button type="button" class="btn btn-warning active" onclick="location.href='${updateLink}'">Update</button>
-    						<button type="button" class="btn btn-danger active" onclick="location.href='${deleteLink}'">Delete</button>
+    						<button type="button" class="btn btn-primary " onclick="location.href='${backLink}'">Back</button>
+    						<button type="button" class="btn btn-warning " onclick="location.href='${updateLink}'">Update</button>
+    						<button type="button" class="btn btn-danger " onclick="location.href='${deleteLink}'">Delete</button>
     						</div>
 			</div>
 			</div>
@@ -67,7 +67,7 @@
     						<td>${rescuer.firstName }</td>
     						<td>${rescuer.lastName }</td>
     						<td><div class="btn-group" role="group" aria-label="...">
-    						<button type="button" class="btn btn-success active" onclick="location.href='${detailsLink}'">Details</button>
+    						<button type="button" class="btn btn-success " onclick="location.href='${detailsLink}'">Details</button>
     					</div></td>
     					</tr>
     				</c:forEach>

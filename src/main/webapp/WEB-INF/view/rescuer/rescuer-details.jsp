@@ -30,7 +30,7 @@
 							<c:url var="operationsLink" value="/rescuer/operations">
 							<c:param name="rescuerId" value="${rescuer.id}" />
 							</c:url>
-							<button type="button" class="btn btn-sm btn-success active" onclick="location.href='${operationsLink}'">Show</button>
+							<button type="button" class="btn btn-sm btn-success " onclick="location.href='${operationsLink}'">Show</button>
     						</td>
 						</tr>
 						<tr>
@@ -61,9 +61,9 @@
 					
     					
     						<div class="btn-group" role="group" aria-label="...">
-    						<button type="button" class="btn btn-primary active" onclick="location.href='${backLink}'">Back</button>
-    						<button type="button" class="btn btn-warning active" onclick="location.href='${updateLink}'">Update</button>
-    						<button type="button" class="btn btn-danger active" onclick="location.href='${deleteLink}'">Delete</button>
+    						<button type="button" class="btn btn-primary " onclick="location.href='${backLink}'">Back</button>
+    						<button type="button" class="btn btn-warning " onclick="location.href='${updateLink}'">Update</button>
+    						<button type="button" class="btn btn-danger " onclick="location.href='${deleteLink}'">Delete</button>
     						</div>
 			</div>
 			</div>
