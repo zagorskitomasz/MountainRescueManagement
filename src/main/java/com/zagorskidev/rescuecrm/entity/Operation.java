@@ -1,6 +1,6 @@
 package com.zagorskidev.rescuecrm.entity;
 
-import java.util.LinkedList;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -18,6 +18,9 @@ import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import com.zagorskidev.rescuecrm.validation.AtLeastOne;
+import com.zagorskidev.rescuecrm.validation.UniqueList;
 
 @Entity
 @Table(name="operation")
@@ -43,6 +46,8 @@ public class Operation {
 	@JoinTable(name="operation_rescuer",
 			joinColumns = @JoinColumn(name="operation_id"),
 			inverseJoinColumns = @JoinColumn(name="rescuer_id"))
+	@UniqueList
+	@AtLeastOne
 	private List<Rescuer> rescuers;
 	
 	public Operation() {}
@@ -54,7 +59,7 @@ public class Operation {
 	
 	public void addRescuer(Rescuer rescuer) {
 		if(rescuers==null)
-			rescuers = new LinkedList<>();
+			rescuers = new ArrayList<>();
 		
 		rescuers.add(rescuer);
 	}

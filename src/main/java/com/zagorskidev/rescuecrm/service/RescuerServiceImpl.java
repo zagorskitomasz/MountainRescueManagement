@@ -17,7 +17,9 @@ public class RescuerServiceImpl implements RescuerService {
 	@Override
 	public List<Rescuer> getAllRescuers() {
 		
-		return rescuerDAO.getAll();
+		List<Rescuer> rescuers = rescuerDAO.getAll();
+		rescuers.removeIf(rescuer -> rescuer.getLastName().equals("N/A"));
+		return rescuers;
 	}
 
 	@Override

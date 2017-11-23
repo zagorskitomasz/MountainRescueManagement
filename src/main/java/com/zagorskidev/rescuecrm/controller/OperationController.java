@@ -79,6 +79,8 @@ public class OperationController {
 			return "operation/operation-form";
 		}
 		else {
+			operation.getRescuers().removeIf(rescuer -> rescuer.getId()==0);
+			
 			if(operation.getId()>0)
 				operationService.updateOperation(operation);
 			else
