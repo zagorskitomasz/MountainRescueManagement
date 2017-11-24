@@ -1,5 +1,5 @@
 # Web application for mountain rescue operations management.
-Now it's simple but working prototype.
+Now it's simple but working prototype: https://mountainrescue.herokuapp.com/
 
 I'm going to continuously develop application (add new features) while keeping code as clean as possible and open for further extensions.
 
@@ -16,5 +16,4 @@ I'm going to continuously develop application (add new features) while keeping c
 - Bootstrap
 
 # TODO:
-- deploy on Heroku
 - further development
