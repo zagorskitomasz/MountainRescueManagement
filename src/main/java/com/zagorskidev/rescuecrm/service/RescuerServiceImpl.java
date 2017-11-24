@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.RescuerDAO;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
+import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 
 @Service
 public class RescuerServiceImpl implements RescuerService {
@@ -36,14 +37,56 @@ public class RescuerServiceImpl implements RescuerService {
 
 	@Override
 	public void updateRescuer(Rescuer rescuer) {
+
+		Rescuer tempRescuer = updateExistingRescuer(rescuer);
 		
-		rescuerDAO.merge(rescuer);
+		rescuerDAO.merge(tempRescuer);
 	}
 
 	@Override
 	public void removeRescuer(int id) {
 		
-		rescuerDAO.delete(id);
+		Rescuer rescuer = getRescuerById(id);
+		
+		if(rescuer.getOperations()==null || rescuer.getOperations().isEmpty())
+			rescuerDAO.delete(id);
+		else
+			anonimize(rescuer);
+	}
+	
+	private Rescuer updateExistingRescuer(Rescuer rescuer) {
+		
+		Rescuer tempRescuer = getRescuerById(rescuer.getId());
+		
+		tempRescuer.setFirstName(rescuer.getFirstName());
+		tempRescuer.setLastName(rescuer.getLastName());
+		tempRescuer.getRescuerDetail().setAddress(rescuer.getRescuerDetail().getAddress());
+		tempRescuer.getRescuerDetail().setPhone(rescuer.getRescuerDetail().getPhone());
+		tempRescuer.getRescuerDetail().setEmail(rescuer.getRescuerDetail().getEmail());
+		
+		return tempRescuer;
+	}
+	
+	private void anonimize(Rescuer rescuer) {
+		
+		rescuer.setFirstName("N/A");
+		rescuer.setLastName("N/A");
+		
+		RescuerDetail rescuerDetail = rescuer.getRescuerDetail();
+		rescuerDetail.setAddress("N/A");
+		rescuerDetail.setEmail(null);
+		rescuerDetail.setPhone(null);
+		
+		updateRescuer(rescuer);
 	}
 
+	@Override
+	public Rescuer createEmptyRescuer() {
+		
+		Rescuer rescuer = new Rescuer();
+		RescuerDetail rescuerDetail = new RescuerDetail();
+		rescuer.setRescuerDetail(rescuerDetail);
+		
+		return rescuer;
+	}
 }

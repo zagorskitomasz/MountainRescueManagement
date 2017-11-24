@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.OperationDAO;
 import com.zagorskidev.rescuecrm.entity.Operation;
+import com.zagorskidev.rescuecrm.entity.OperationDetail;
+import com.zagorskidev.rescuecrm.entity.Rescuer;
 
 @Service
 public class OperationServiceImpl implements OperationService {
@@ -44,4 +46,20 @@ public class OperationServiceImpl implements OperationService {
 		operationDAO.delete(id);
 	}
 
+	@Override
+	public Operation createEmptyOperation() {
+		
+		Operation operation = new Operation();
+		OperationDetail operationDetail = new OperationDetail();
+		operation.setOperationDetail(operationDetail);
+		
+		createEmptyRescuersList(operation);
+		
+		return operation;
+	}
+
+	private void createEmptyRescuersList(Operation operation) {
+		for(int i=0; i<3; i++)
+			operation.addRescuer(new Rescuer());
+	}
 }

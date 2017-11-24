@@ -22,6 +22,13 @@ public class HomeController {
 	public String showHomePage(HttpServletRequest request, Principal principal) {
 		
 		HttpSession session = request.getSession();
+		String userName = getUserName(principal);
+		session.setAttribute("loggedUserName", userName);
+		
+		return "home";
+	}
+
+	private String getUserName(Principal principal) {
 		String userName;
 		
 		if(principal!=null) {
@@ -30,9 +37,6 @@ public class HomeController {
 		}
 		else
 			userName = "anonymous";
-		
-		session.setAttribute("loggedUserName", userName);
-		
-		return "home";
+		return userName;
 	}
 }

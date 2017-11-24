@@ -11,4 +11,5 @@ public interface RescuerService {
 	public void addRescuer(Rescuer rescuer);
 	public void updateRescuer(Rescuer rescuer);
 	public void removeRescuer(int id);
+	public Rescuer createEmptyRescuer();
 }

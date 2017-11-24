@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
-import com.zagorskidev.rescuecrm.entity.OperationDetail;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.service.OperationService;
 import com.zagorskidev.rescuecrm.service.RescuerService;
@@ -52,18 +51,10 @@ public class OperationController {
 	@GetMapping("/create")
 	public String showCreateForm(Model model) {
 		
-		Operation operation = new Operation();
-		OperationDetail operationDetail = new OperationDetail();
-		operation.setOperationDetail(operationDetail);
+		Operation operation = operationService.createEmptyOperation();
+		String formTitle = "Create Operation";
 		
-		for(int i=0; i<3; i++)
-			operation.addRescuer(new Rescuer());
-		
-		List<Rescuer> candidates = rescuerService.getAllRescuers();
-		
-		model.addAttribute("operation", operation);
-		model.addAttribute("candidates", candidates);
-		model.addAttribute("formTitle", "Create Operation");
+		setOperationFormModel(operation, model, formTitle);
 		
 		return "operation/operation-form";
 	}
@@ -72,19 +63,15 @@ public class OperationController {
 	public String saveOperation(@Valid @ModelAttribute("operation") Operation operation, BindingResult bindingResult, Model model) {
 		
 		if(bindingResult.hasErrors()) {
-			List<Rescuer> candidates = rescuerService.getAllRescuers();
-			model.addAttribute("operation", operation);
-			model.addAttribute("candidates", candidates);
-			model.addAttribute("formTitle", "Complete Form");
+			
+			String formTitle = "Correct Form";
+			
+			setOperationFormModel(operation, model, formTitle);
+			
 			return "operation/operation-form";
 		}
 		else {
-			operation.getRescuers().removeIf(rescuer -> rescuer.getId()==0);
-			
-			if(operation.getId()>0)
-				operationService.updateOperation(operation);
-			else
-				operationService.addOperation(operation);
+			sendOperationToService(operation);
 			
 			return "redirect:/operation/all";
 		}
@@ -94,12 +81,9 @@ public class OperationController {
 	public String updateOperation(@RequestParam("operationId") int id, Model model) {
 		
 		Operation operation = operationService.getOperationById(id);
+		String formTitle = "Update Operation";
 		
-		List<Rescuer> candidates = rescuerService.getAllRescuers();
-		
-		model.addAttribute("operation", operation);
-		model.addAttribute("candidates", candidates);
-		model.addAttribute("formTitle", "Update Operation");
+		setOperationFormModel(operation, model, formTitle);
 		
 		return "operation/operation-form";
 	}
@@ -119,5 +103,24 @@ public class OperationController {
 		model.addAttribute("operation", operation);
 		
 		return "operation/delete-operation-confirm";
+	}
+
+	private void setOperationFormModel(Operation operation, Model model, String formTitle) {
+		
+		List<Rescuer> candidates = rescuerService.getAllRescuers();
+		
+		model.addAttribute("operation", operation);
+		model.addAttribute("candidates", candidates);
+		model.addAttribute("formTitle", formTitle);
+	}
+
+	private void sendOperationToService(Operation operation) {
+		
+		operation.getRescuers().removeIf(rescuer -> rescuer.getId()==0);
+		
+		if(operation.getId()>0)
+			operationService.updateOperation(operation);
+		else
+			operationService.addOperation(operation);
 	}
 }

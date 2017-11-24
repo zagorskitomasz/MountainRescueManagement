@@ -56,20 +56,13 @@ public class LoginController {
 		}
 	}
 	
-	@GetMapping("/access-denied")
+	@GetMapping("/accessDenied")
 	public String accessDenied(Principal principal, Model model) {
 	
-		String userName;
-		
-		if(principal!=null) {
-			User user = userService.findUserByEmail(principal.getName());
-			userName = user.getName();
-		}
-		else
-			userName = "";
+		String userName = getUserName(principal);
 		
 		model.addAttribute("userName", userName);
-		return "access-denied";
+		return "/security/access-denied";
 	}
 	
 	@GetMapping("/logoutSuccess")
@@ -91,6 +84,13 @@ public class LoginController {
 	private HttpSession addUserToSession(HttpServletRequest request, Principal principal) {
 		
 		HttpSession session = request.getSession();
+		String userName = getUserName(principal);
+		session.setAttribute("loggedUserName", userName);
+		
+		return session;
+	}
+
+	private String getUserName(Principal principal) {
 		String userName;
 		
 		if(principal!=null) {
@@ -99,9 +99,6 @@ public class LoginController {
 		}
 		else
 			userName = "anonymous";
-		
-		session.setAttribute("loggedUserName", userName);
-		
-		return session;
+		return userName;
 	}
 }

@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
-import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 import com.zagorskidev.rescuecrm.service.RescuerService;
 
 @Controller
@@ -49,9 +48,7 @@ public class RescuerController {
 	@GetMapping("/add")
 	public String addRescuer(Model model) {
 		
-		Rescuer rescuer = new Rescuer();
-		RescuerDetail rescuerDetail = new RescuerDetail();
-		rescuer.setRescuerDetail(rescuerDetail);
+		Rescuer rescuer = rescuerService.createEmptyRescuer();
 		
 		model.addAttribute("rescuer", rescuer);
 		model.addAttribute("formTitle", "Add Rescuer");
@@ -74,22 +71,12 @@ public class RescuerController {
 	public String saveRescuer(@Valid @ModelAttribute("rescuer") Rescuer rescuer, BindingResult bindingResult, Model model) {
 		
 		if(bindingResult.hasErrors()) {
-			model.addAttribute("formTitle", "Complete Form");
+			
+			model.addAttribute("formTitle", "Correct Form");
 			return "rescuer/rescuer-form";
 		}
 		else {
-			if(rescuer.getId()>0) {
-				Rescuer tempRescuer = rescuerService.getRescuerById(rescuer.getId());
-				tempRescuer.setFirstName(rescuer.getFirstName());
-				tempRescuer.setLastName(rescuer.getLastName());
-				tempRescuer.getRescuerDetail().setAddress(rescuer.getRescuerDetail().getAddress());
-				tempRescuer.getRescuerDetail().setPhone(rescuer.getRescuerDetail().getPhone());
-				tempRescuer.getRescuerDetail().setEmail(rescuer.getRescuerDetail().getEmail());
-				rescuerService.updateRescuer(tempRescuer);
-			}
-			else
-				rescuerService.addRescuer(rescuer);
-			
+			sendRescuerToService(rescuer);
 			return "redirect:/rescuer/all";
 		}
 	}
@@ -106,12 +93,7 @@ public class RescuerController {
 	@GetMapping("/delete")
 	public String deleteRescuer(@RequestParam("rescuerId") int id, Model model) {
 		
-		Rescuer rescuer = rescuerService.getRescuerById(id);
-		
-		if(rescuer.getOperations()==null || rescuer.getOperations().isEmpty())
-			rescuerService.removeRescuer(id);
-		else
-			anonimize(rescuer);
+		rescuerService.removeRescuer(id);
 		
 		return "redirect:/rescuer/all";
 	}
@@ -128,23 +110,19 @@ public class RescuerController {
 		return "operation/list-operations";
 	}
 	
-	private void anonimize(Rescuer rescuer) {
-		
-		rescuer.setFirstName("N/A");
-		rescuer.setLastName("N/A");
-		
-		RescuerDetail rescuerDetail = rescuer.getRescuerDetail();
-		rescuerDetail.setAddress("N/A");
-		rescuerDetail.setEmail(null);
-		rescuerDetail.setPhone(null);
-		
-		rescuerService.updateRescuer(rescuer);
-	}
-	
 	@InitBinder
 	public void initBinder(WebDataBinder dataBinder) {
 		StringTrimmerEditor stringTrimmerEditor = new StringTrimmerEditor(true);
 		
 		dataBinder.registerCustomEditor(String.class, stringTrimmerEditor);
+	}
+
+	private void sendRescuerToService(Rescuer rescuer) {
+		
+		if(rescuer.getId()>0) {
+			rescuerService.updateRescuer(rescuer);
+		}
+		else
+			rescuerService.addRescuer(rescuer);
 	}
 }

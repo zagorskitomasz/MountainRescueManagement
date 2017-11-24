@@ -11,4 +11,5 @@ public interface OperationService {
 	public void addOperation(Operation operation);
 	public void updateOperation(Operation operation);
 	public void removeOperation(int id);
+	public Operation createEmptyOperation();
 }
