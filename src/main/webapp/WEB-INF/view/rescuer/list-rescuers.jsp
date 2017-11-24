@@ -16,7 +16,6 @@
     					<tr>
     						<th>First Name</th>
     						<th>Last Name</th>
-    						<th>Phone</th>
     						<th>Actions</th>
     					</tr>
     				</thead>
@@ -38,7 +37,6 @@
     					<tr>
     						<td>${rescuer.firstName }</td>
     						<td>${rescuer.lastName }</td>
-    						<td>${rescuer.rescuerDetail.phone }</td>
     						<td><div class="btn-group" role="group" aria-label="...">
     						<button type="button" class="btn btn-success " onclick="location.href='${detailsLink}'">Details</button>
     						<button type="button" class="btn btn-warning " onclick="location.href='${updateLink}'">Update</button>
