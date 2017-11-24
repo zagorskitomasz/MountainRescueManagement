@@ -26,8 +26,9 @@
               </ul>
             </li>
             <li><a href="/operation/create">Create Operation</a></li>
-          </ul>
-        <div class="collapse navbar-collapse navbar-right">
+          
+        </ul>
+        <div class="navbar-right">
         	<sec:authorize access="isAnonymous()">
         		<button type="button" onclick="location.href='/login'" class="btn btn-primary navbar-btn">Log In</button>
         	</sec:authorize>
