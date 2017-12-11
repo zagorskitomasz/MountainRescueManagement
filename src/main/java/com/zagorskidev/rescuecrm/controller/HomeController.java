@@ -2,41 +2,23 @@ package com.zagorskidev.rescuecrm.controller;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.zagorskidev.rescuecrm.entity.security.User;
-import com.zagorskidev.rescuecrm.service.security.UserService;
+import com.zagorskidev.rescuecrm.service.SessionService;
 
 @Controller
 public class HomeController {
-
-	@Autowired
-	private UserService userService;
 	
-	@RequestMapping({"/", "/home"})
-	public String showHomePage(HttpServletRequest request, Principal principal) {
-		
-		HttpSession session = request.getSession();
-		String userName = getUserName(principal);
-		session.setAttribute("loggedUserName", userName);
-		
-		return "home";
-	}
+	@Autowired
+	private SessionService sessionService;
 
-	private String getUserName(Principal principal) {
-		String userName;
-		
-		if(principal!=null) {
-			User user = userService.findUserByEmail(principal.getName());
-			userName = user.getName();
-		}
-		else
-			userName = "anonymous";
-		return userName;
+	@RequestMapping({ "/", "/home" })
+	public String showHomePage(Principal principal) {
+
+		sessionService.addUserToSession(principal);
+
+		return "home";
 	}
 }

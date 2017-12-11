@@ -2,7 +2,6 @@ package com.zagorskidev.rescuecrm.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,6 +9,7 @@ import com.zagorskidev.rescuecrm.dao.OperationDAO;
 import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.OperationDetail;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
+import com.zagorskidev.rescuecrm.utils.DataUtils;
 
 @Service
 public class OperationServiceImpl implements OperationService {
@@ -45,12 +45,10 @@ public class OperationServiceImpl implements OperationService {
 
 	private void removeDiactrics(Operation operation) {
 
-		if (operation.getDestination() != null)
-			operation.setDestination(
-					StringUtils.stripAccents(operation.getDestination()).replace('ł', 'l').replace('Ł', 'L'));
-		if (operation.getOperationDetail().getDescription() != null)
-			operation.getOperationDetail().setDescription(StringUtils
-					.stripAccents(operation.getOperationDetail().getDescription()).replace('ł', 'l').replace('Ł', 'L'));
+		OperationDetail operationDetail = operation.getOperationDetail();
+		
+		operation.setDestination(DataUtils.removeDiactrics(operation.getDestination()));
+		operationDetail.setDescription(DataUtils.removeDiactrics(operationDetail.getDescription()));
 	}
 
 	@Override

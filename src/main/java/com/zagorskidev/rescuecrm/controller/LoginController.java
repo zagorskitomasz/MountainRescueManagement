@@ -2,8 +2,6 @@ package com.zagorskidev.rescuecrm.controller;
 
 import java.security.Principal;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import com.zagorskidev.rescuecrm.entity.security.User;
+import com.zagorskidev.rescuecrm.service.SessionService;
 import com.zagorskidev.rescuecrm.service.security.UserService;
 
 @Controller
@@ -22,83 +21,68 @@ public class LoginController {
 
 	@Autowired
 	private UserService userService;
-	
+
+	@Autowired
+	private SessionService sessionService;
+
 	@GetMapping("/login")
 	public String showLoginForm() {
-		
+
 		return "login";
 	}
-	
+
 	@GetMapping("/registration")
 	public String showRegistrationForm(Model model) {
-		
+
 		User user = new User();
 		model.addAttribute("user", user);
-		
+
 		return "security/registration-form";
 	}
-	
+
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
 
 		User userExists = userService.findUserByEmail(user.getEmail());
-		
-		if(userExists!=null) {
-			bindingResult.rejectValue("email", "error.user",
-					"There is already user registered with this email");
+
+		if (userExists != null) {
+			bindingResult.rejectValue("email", "error.user", "There is already user registered with this email");
 		}
-		if(bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			return "security/registration-form";
-		}
-		else {
+		} else {
 			userService.saveUser(user);
 			return "security/registration-success";
 		}
 	}
-	
+
 	@GetMapping("/accessDenied")
 	public String accessDenied(Principal principal, Model model) {
-	
-		String userName = getUserName(principal);
-		
+
+		String userName = "";
+
 		model.addAttribute("userName", userName);
 		return "/security/access-denied";
 	}
-	
+
 	@GetMapping("/logoutSuccess")
-	public String showLogoutPage(HttpServletRequest request, Principal principal) {
-		
-		addUserToSession(request, principal);
-		
+	public String showLogoutPage(Principal principal) {
+
+		addNameToSession(principal);
+
 		return "/security/logout";
 	}
-	
+
 	@GetMapping("/loginSuccess")
-	public String showLoginPage(HttpServletRequest request, Principal principal) {
-		
-		addUserToSession(request, principal);
-		
+	public String showLoginPage(Principal principal) {
+
+		addNameToSession(principal);
+
 		return "/security/login-success";
 	}
-	
-	private HttpSession addUserToSession(HttpServletRequest request, Principal principal) {
-		
-		HttpSession session = request.getSession();
-		String userName = getUserName(principal);
-		session.setAttribute("loggedUserName", userName);
-		
-		return session;
-	}
 
-	private String getUserName(Principal principal) {
-		String userName;
+	private void addNameToSession(Principal principal) {
 		
-		if(principal!=null) {
-			User user = userService.findUserByEmail(principal.getName());
-			userName = user.getName();
-		}
-		else
-			userName = "anonymous";
-		return userName;
+		sessionService.addUserToSession(principal);
 	}
 }

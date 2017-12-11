@@ -2,13 +2,13 @@ package com.zagorskidev.rescuecrm.service;
 
 import java.util.List;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.RescuerDAO;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
+import com.zagorskidev.rescuecrm.utils.DataUtils;
 
 @Service
 public class RescuerServiceImpl implements RescuerService {
@@ -85,16 +85,12 @@ public class RescuerServiceImpl implements RescuerService {
 
 	private void removeDiactrics(Rescuer rescuer) {
 
-		if (rescuer.getFirstName() != null)
-			rescuer.setFirstName(StringUtils.stripAccents(rescuer.getFirstName()).replace('ł', 'l').replace('Ł', 'L'));
-		if (rescuer.getLastName() != null)
-			rescuer.setLastName(StringUtils.stripAccents(rescuer.getLastName()).replace('ł', 'l').replace('Ł', 'L'));
-		if (rescuer.getRescuerDetail().getEmail() != null)
-			rescuer.getRescuerDetail().setEmail(StringUtils.stripAccents(rescuer.getRescuerDetail().getEmail())
-					.replace('ł', 'l').replace('Ł', 'L'));
-		if (rescuer.getRescuerDetail().getAddress() != null)
-			rescuer.getRescuerDetail().setAddress(StringUtils.stripAccents(rescuer.getRescuerDetail().getAddress())
-					.replace('ł', 'l').replace('Ł', 'L'));
+		RescuerDetail rescuerDetail = rescuer.getRescuerDetail();
+		
+		rescuer.setFirstName(DataUtils.removeDiactrics(rescuer.getFirstName()));
+		rescuer.setLastName(DataUtils.removeDiactrics(rescuer.getLastName()));
+		rescuerDetail.setEmail(DataUtils.removeDiactrics(rescuerDetail.getEmail()));
+		rescuerDetail.setAddress(DataUtils.removeDiactrics(rescuerDetail.getAddress()));
 	}
 
 	@Override
