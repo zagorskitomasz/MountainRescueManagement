@@ -19,6 +19,11 @@ import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.service.OperationService;
 import com.zagorskidev.rescuecrm.service.RescuerService;
 
+/**
+ * Handles requests related to rescue operation CRUD operations
+ * @author tomek
+ *
+ */
 @Controller
 @RequestMapping("/operation")
 public class OperationController {
@@ -105,6 +110,12 @@ public class OperationController {
 		return "operation/delete-operation-confirm";
 	}
 
+	/**
+	 * Adds to model necessary beans for creating/updating operation form
+	 * @param operation
+	 * @param model
+	 * @param formTitle
+	 */
 	private void setOperationFormModel(Operation operation, Model model, String formTitle) {
 		
 		List<Rescuer> candidates = rescuerService.getAllRescuers();
@@ -114,6 +125,10 @@ public class OperationController {
 		model.addAttribute("formTitle", formTitle);
 	}
 
+	/**
+	 * Saves or updates operation depending on its existence
+	 * @param operation
+	 */
 	private void sendOperationToService(Operation operation) {
 		
 		operation.getRescuers().removeIf(rescuer -> rescuer.getId()==0);

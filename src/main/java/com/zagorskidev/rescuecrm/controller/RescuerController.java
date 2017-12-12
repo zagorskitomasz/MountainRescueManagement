@@ -21,6 +21,11 @@ import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.service.RescuerService;
 
+/**
+ * Handles requests related to rescuer CRUD operations
+ * @author tomek
+ *
+ */
 @Controller
 @RequestMapping("/rescuer")
 public class RescuerController {
@@ -67,16 +72,24 @@ public class RescuerController {
 		return "rescuer/rescuer-form";
 	}
 
+	/**
+	 * Validates add/update rescuer form
+	 * @param rescuer
+	 * @param bindingResult
+	 * @param model
+	 * @return
+	 */
 	@PostMapping("/save")
 	public String saveRescuer(@Valid @ModelAttribute("rescuer") Rescuer rescuer, BindingResult bindingResult,
 			Model model) {
 
 		if (bindingResult.hasErrors()) {
-
 			model.addAttribute("formTitle", "Correct Form");
+
 			return "rescuer/rescuer-form";
 		} else {
 			sendRescuerToService(rescuer);
+
 			return "redirect:/rescuer/all";
 		}
 	}
@@ -98,6 +111,12 @@ public class RescuerController {
 		return "redirect:/rescuer/all";
 	}
 
+	/**
+	 * Loads operations of rescuer specified by id
+	 * @param id
+	 * @param model
+	 * @return
+	 */
 	@GetMapping("/operations")
 	public String showOperations(@RequestParam("rescuerId") int id, Model model) {
 

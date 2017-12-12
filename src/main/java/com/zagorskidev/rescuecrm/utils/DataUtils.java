@@ -1,9 +1,11 @@
 package com.zagorskidev.rescuecrm.utils;
 
+import org.apache.commons.lang3.StringUtils;
+
 public class DataUtils {
 
 	public static String removeDiactrics(String input) {
-		return input;/*
+		
 		String output = null;
 		
 		if(input == null)
@@ -14,6 +16,6 @@ public class DataUtils {
 				.replace('ł', 'l')
 				.replace('Ł', 'L');
 		
-		return output;*/
+		return output;
 	}
 }

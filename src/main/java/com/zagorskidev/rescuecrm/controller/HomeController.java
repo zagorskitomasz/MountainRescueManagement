@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.zagorskidev.rescuecrm.service.SessionService;
 
+/**
+ * Handles requests to home page.
+ * @author tomek
+ *
+ */
 @Controller
 public class HomeController {
 	

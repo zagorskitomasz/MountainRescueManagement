@@ -7,6 +7,11 @@ import org.springframework.boot.autoconfigure.web.ErrorMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
+/**
+ * Spring Boot  application launcher with beans configuration
+ * @author tomek
+ *
+ */
 @SpringBootApplication
 @EnableAutoConfiguration(exclude=ErrorMvcAutoConfiguration.class)
 public class RescueCRM {

@@ -13,15 +13,20 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
+/**
+ * Configuration of Spring Security
+ * @author tomek
+ *
+ */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	BCryptPasswordEncoder bCryptPasswordEncoder;
+	private BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
-	DataSource dataSource;
+	private DataSource dataSource;
 	
 	@Value("${spring.queries.users-query}")
 	private String usersQuery;
@@ -57,7 +62,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/operation/delete",
 			"/operation/deleteConfirmation"};
 	
-	
+	/**
+	 * Configuration of auth manager
+	 */
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) 
 			throws Exception{
@@ -70,6 +77,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.passwordEncoder(bCryptPasswordEncoder);
 	}
 	
+	/**
+	 * Configuring Spring auto login/logout and permissions to URLs
+	 */
 	@Override
 	protected void configure(HttpSecurity http) throws Exception{
 		
@@ -101,6 +111,9 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 				.accessDeniedPage("/accessDenied");
 	}
 	
+	/**
+	 * Static resources will be ignored
+	 */
 	@Override
 	public void configure(WebSecurity web) throws Exception{
 		

@@ -16,6 +16,11 @@ import com.zagorskidev.rescuecrm.entity.security.User;
 import com.zagorskidev.rescuecrm.service.SessionService;
 import com.zagorskidev.rescuecrm.service.security.UserService;
 
+/**
+ * Handles requests related to app security
+ * @author tomek
+ *
+ */
 @Controller
 public class LoginController {
 
@@ -40,6 +45,12 @@ public class LoginController {
 		return "security/registration-form";
 	}
 
+	/**
+	 * Validates registration form
+	 * @param user
+	 * @param bindingResult
+	 * @return
+	 */
 	@PostMapping("/register")
 	public String registerUser(@Valid @ModelAttribute("user") User user, BindingResult bindingResult) {
 
