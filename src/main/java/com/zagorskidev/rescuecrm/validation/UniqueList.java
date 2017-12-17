@@ -10,6 +10,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+/**
+ * Validation grants that list won't contain same rescuer two or more times.
+ * @author tomek
+ *
+ */
 @Constraint(validatedBy=UniqueListConstraintValidator.class)
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD })

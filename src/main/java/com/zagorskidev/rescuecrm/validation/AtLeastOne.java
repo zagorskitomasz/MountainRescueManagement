@@ -10,6 +10,11 @@ import java.lang.annotation.Target;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
+/**
+ * Validation grants that list will contain at least one rescuer.
+ * @author tomek
+ *
+ */
 @Constraint(validatedBy=AtLeastOneConstraintValidator.class)
 @Retention(RUNTIME)
 @Target({ FIELD, METHOD })

@@ -10,6 +10,11 @@ import org.springframework.stereotype.Service;
 import com.zagorskidev.rescuecrm.entity.security.User;
 import com.zagorskidev.rescuecrm.service.security.UserService;
 
+/**
+ * Implements operations related to HTTP session.
+ * @author tomek
+ *
+ */
 @Service
 public class SessionServiceImpl implements SessionService {
 

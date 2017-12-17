@@ -10,6 +10,11 @@ import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 import com.zagorskidev.rescuecrm.utils.DataUtils;
 
+/**
+ * Implementation of services related to rescuer bean.
+ * @author tomek
+ *
+ */
 @Service
 public class RescuerServiceImpl implements RescuerService {
 
@@ -33,7 +38,7 @@ public class RescuerServiceImpl implements RescuerService {
 	@Override
 	public void addRescuer(Rescuer rescuer) {
 
-		removeDiactrics(rescuer);
+		removeDiacritics(rescuer);
 		rescuerDAO.persist(rescuer);
 	}
 
@@ -41,7 +46,7 @@ public class RescuerServiceImpl implements RescuerService {
 	public void updateRescuer(Rescuer rescuer) {
 
 		Rescuer tempRescuer = updateExistingRescuer(rescuer);
-		removeDiactrics(tempRescuer);
+		removeDiacritics(tempRescuer);
 
 		rescuerDAO.merge(tempRescuer);
 	}
@@ -54,9 +59,14 @@ public class RescuerServiceImpl implements RescuerService {
 		if (rescuer.getOperations() == null || rescuer.getOperations().isEmpty())
 			rescuerDAO.delete(id);
 		else
-			anonimize(rescuer);
+			anonymize(rescuer);
 	}
 
+	/**
+	 * Transfers data from incoming rescuer object to object mapped from DB with same id.
+	 * @param rescuer
+	 * @return
+	 */
 	private Rescuer updateExistingRescuer(Rescuer rescuer) {
 
 		Rescuer tempRescuer = getRescuerById(rescuer.getId());
@@ -70,7 +80,12 @@ public class RescuerServiceImpl implements RescuerService {
 		return tempRescuer;
 	}
 
-	private void anonimize(Rescuer rescuer) {
+	/**
+	 * Anonymize rescuer instead of deleting it,
+	 * so rescuer will be still shown in his operations, but with data like 'N/A' 
+	 * @param rescuer
+	 */
+	private void anonymize(Rescuer rescuer) {
 
 		rescuer.setFirstName("N/A");
 		rescuer.setLastName("N/A");
@@ -83,16 +98,23 @@ public class RescuerServiceImpl implements RescuerService {
 		updateRescuer(rescuer);
 	}
 
-	private void removeDiactrics(Rescuer rescuer) {
+	/**
+	 * Translate rescuer fields containing native diacritics to strings in English alphabet
+	 * @param rescuer
+	 */
+	private void removeDiacritics(Rescuer rescuer) {
 
 		RescuerDetail rescuerDetail = rescuer.getRescuerDetail();
 		
-		rescuer.setFirstName(DataUtils.removeDiactrics(rescuer.getFirstName()));
-		rescuer.setLastName(DataUtils.removeDiactrics(rescuer.getLastName()));
-		rescuerDetail.setEmail(DataUtils.removeDiactrics(rescuerDetail.getEmail()));
-		rescuerDetail.setAddress(DataUtils.removeDiactrics(rescuerDetail.getAddress()));
+		rescuer.setFirstName(DataUtils.removeDiacritics(rescuer.getFirstName()));
+		rescuer.setLastName(DataUtils.removeDiacritics(rescuer.getLastName()));
+		rescuerDetail.setEmail(DataUtils.removeDiacritics(rescuerDetail.getEmail()));
+		rescuerDetail.setAddress(DataUtils.removeDiacritics(rescuerDetail.getAddress()));
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Rescuer createEmptyRescuer() {
 

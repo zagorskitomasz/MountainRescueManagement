@@ -12,6 +12,11 @@ import com.zagorskidev.rescuecrm.dao.security.UserRepository;
 import com.zagorskidev.rescuecrm.entity.security.Role;
 import com.zagorskidev.rescuecrm.entity.security.User;
 
+/**
+ * Implements operations related to application user bean.
+ * @author tomek
+ *
+ */
 @Service
 public class UserServiceImpl implements UserService {
 

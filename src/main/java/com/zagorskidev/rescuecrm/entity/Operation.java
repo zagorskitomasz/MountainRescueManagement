@@ -22,6 +22,11 @@ import javax.validation.constraints.Size;
 import com.zagorskidev.rescuecrm.validation.AtLeastOne;
 import com.zagorskidev.rescuecrm.validation.UniqueList;
 
+/**
+ * Mapping object represents rescue operation.
+ * @author tomek
+ *
+ */
 @Entity
 @Table(name="operation")
 public class Operation {

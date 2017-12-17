@@ -9,6 +9,11 @@ import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+/**
+ * Mapping object represents details of rescue operation.
+ * @author tomek
+ *
+ */
 @Entity
 @Table(name="operation_detail")
 public class OperationDetail {

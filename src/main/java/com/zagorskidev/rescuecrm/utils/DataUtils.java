@@ -2,9 +2,19 @@ package com.zagorskidev.rescuecrm.utils;
 
 import org.apache.commons.lang3.StringUtils;
 
+/**
+ * Utility class containing common operations on application data.
+ * @author tomek
+ *
+ */
 public class DataUtils {
 
-	public static String removeDiactrics(String input) {
+	/**
+	 * Translates native strings to English alphabet.
+	 * @param input
+	 * @return
+	 */
+	public static String removeDiacritics(String input) {
 		
 		String output = null;
 		

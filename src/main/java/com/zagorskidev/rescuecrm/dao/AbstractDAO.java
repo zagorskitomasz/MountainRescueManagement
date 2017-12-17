@@ -8,12 +8,21 @@ import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * Implements common persistence operations for subclasses.
+ * @author tomek
+ *
+ * @param <Type>
+ */
 @Transactional
 public abstract class AbstractDAO<Type>{
 
     private final Class<Type> persistentClass;
     private final String typeArgName;
     
+    /**
+     * Initialize fields related to generic type useful for persistence operations.
+     */
     @SuppressWarnings("unchecked")
     public AbstractDAO(){
     	
@@ -32,17 +41,30 @@ public abstract class AbstractDAO<Type>{
 		return this.entityManager;
 	}
 	
+	/**
+	 * Single item by id.
+	 * @param id
+	 * @return
+	 */
 	public Type get(int id) {
 		
 		Type item = entityManager.find(persistentClass, id);
 		return item;
 	}
 
+	/**
+	 * Add new.
+	 * @param item
+	 */
 	public void persist(Type item) {
 		
 		entityManager.persist(item);
 	}
 	
+	/**
+	 * Update.
+	 * @param item
+	 */
 	public void merge(Type item) {
 		
 		entityManager.merge(item);

@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 
+/**
+ * Grants database persistence operations for rescuer beans.
+ * @author tomek
+ *
+ */
 public interface RescuerDAO {
 
 	public List<Rescuer> getAll();

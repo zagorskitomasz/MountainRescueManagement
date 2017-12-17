@@ -14,6 +14,11 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 
+/**
+ * Mapping object represents details of mountain rescuer.
+ * @author tomek
+ *
+ */
 @Entity
 @Table(name="rescuer_detail")
 public class RescuerDetail {

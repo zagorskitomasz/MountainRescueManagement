@@ -4,6 +4,11 @@ import java.util.List;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
 
+/**
+ * Grants database persistence operations for rescue operations beans.
+ * @author tomek
+ *
+ */
 public interface OperationDAO {
 
 	public List<Operation> getAll();

@@ -18,6 +18,11 @@ import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.data.annotation.Transient;
 
+/**
+ * Mapping object represents application user.
+ * @author tomek
+ *
+ */
 @Entity
 @Table(name="user")
 public class User {

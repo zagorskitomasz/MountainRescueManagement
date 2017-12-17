@@ -7,6 +7,11 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 
+/**
+ * Implements validation granting that list will contain at least one rescuer.
+ * @author tomek
+ *
+ */
 public class AtLeastOneConstraintValidator implements ConstraintValidator<AtLeastOne, List<Rescuer>> {
 
 	@Override

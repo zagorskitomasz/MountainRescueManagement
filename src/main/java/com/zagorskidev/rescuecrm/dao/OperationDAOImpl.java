@@ -10,6 +10,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
 
+/**
+ * Implements persistence operations.
+ * @author tomek
+ *
+ */
 @Repository
 @Transactional
 public class OperationDAOImpl extends AbstractDAO<Operation> implements OperationDAO {

@@ -11,6 +11,11 @@ import com.zagorskidev.rescuecrm.entity.OperationDetail;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.utils.DataUtils;
 
+/**
+ * Implementation of services related to operation bean.
+ * @author tomek
+ *
+ */
 @Service
 public class OperationServiceImpl implements OperationService {
 
@@ -32,23 +37,27 @@ public class OperationServiceImpl implements OperationService {
 	@Override
 	public void addOperation(Operation operation) {
 
-		removeDiactrics(operation);
+		removeDiacritics(operation);
 		operationDAO.persist(operation);
 	}
 
 	@Override
 	public void updateOperation(Operation operation) {
 
-		removeDiactrics(operation);
+		removeDiacritics(operation);
 		operationDAO.merge(operation);
 	}
 
-	private void removeDiactrics(Operation operation) {
+	/**
+	 * Translate operation fields containing native diacritics to strings in English alphabet
+	 * @param operation
+	 */
+	private void removeDiacritics(Operation operation) {
 
 		OperationDetail operationDetail = operation.getOperationDetail();
 		
-		operation.setDestination(DataUtils.removeDiactrics(operation.getDestination()));
-		operationDetail.setDescription(DataUtils.removeDiactrics(operationDetail.getDescription()));
+		operation.setDestination(DataUtils.removeDiacritics(operation.getDestination()));
+		operationDetail.setDescription(DataUtils.removeDiacritics(operationDetail.getDescription()));
 	}
 
 	@Override
@@ -57,6 +66,9 @@ public class OperationServiceImpl implements OperationService {
 		operationDAO.delete(id);
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Operation createEmptyOperation() {
 

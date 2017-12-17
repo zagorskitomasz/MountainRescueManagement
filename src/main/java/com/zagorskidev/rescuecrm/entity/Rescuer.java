@@ -19,6 +19,11 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+/**
+ * Mapping object represents mountain rescuer.
+ * @author tomek
+ *
+ */
 @Entity
 @Table(name="rescuer")
 public class Rescuer {

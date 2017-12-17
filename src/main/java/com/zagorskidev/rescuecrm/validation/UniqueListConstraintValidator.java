@@ -7,6 +7,11 @@ import javax.validation.ConstraintValidatorContext;
 
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 
+/**
+ * Implements validation granting that list won't contain same rescuer two or more times.
+ * @author tomek
+ *
+ */
 public class UniqueListConstraintValidator implements ConstraintValidator<UniqueList, List<Rescuer>> {
 
 	@Override
