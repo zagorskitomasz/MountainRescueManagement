@@ -19,6 +19,9 @@ import com.zagorskidev.rescuecrm.entity.Operation;
 @Transactional
 public class OperationDAOImpl extends AbstractDAO<Operation> implements OperationDAO {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Operation> getAll() {

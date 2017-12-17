@@ -11,6 +11,10 @@ import com.zagorskidev.rescuecrm.entity.Rescuer;
  */
 public interface RescuerDAO {
 
+	/**
+	 * Returns list sorted by last names.
+	 * @return
+	 */
 	public List<Rescuer> getAll();
 	public Rescuer get(int id);
 	public void persist(Rescuer rescuer);

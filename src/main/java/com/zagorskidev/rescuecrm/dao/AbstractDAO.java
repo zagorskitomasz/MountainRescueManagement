@@ -4,7 +4,6 @@ import java.lang.reflect.ParameterizedType;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,7 +17,6 @@ import org.springframework.transaction.annotation.Transactional;
 public abstract class AbstractDAO<Type>{
 
     private final Class<Type> persistentClass;
-    private final String typeArgName;
     
     /**
      * Initialize fields related to generic type useful for persistence operations.
@@ -30,7 +28,6 @@ public abstract class AbstractDAO<Type>{
         		((ParameterizedType) this.getClass()
         				.getGenericSuperclass())
         				.getActualTypeArguments()[0];
-        this.typeArgName = this.persistentClass.getSimpleName();
     }
 	
     @PersistenceContext
@@ -71,9 +68,8 @@ public abstract class AbstractDAO<Type>{
 	}
 
 	public void delete(int id) {
-
-		Query query = entityManager.createQuery("delete " +typeArgName+ " where id=:itemId");
-		query.setParameter("itemId", id);
-		query.executeUpdate();
+		
+		Type toDelete = get(id);
+		entityManager.remove(toDelete);
 	}
 }

@@ -19,6 +19,9 @@ import com.zagorskidev.rescuecrm.entity.Rescuer;
 @Transactional
 public class RescuerDAOImpl extends AbstractDAO<Rescuer> implements RescuerDAO {
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	@SuppressWarnings("unchecked")
 	public List<Rescuer> getAll() {

@@ -11,6 +11,10 @@ import com.zagorskidev.rescuecrm.entity.Operation;
  */
 public interface OperationDAO {
 
+	/**
+	 * Returns list sorted by id descending.
+	 * @return
+	 */
 	public List<Operation> getAll();
 	public Operation get(int id);
 	public void persist(Operation operation);
