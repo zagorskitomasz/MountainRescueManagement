@@ -21,6 +21,9 @@ public class OperationServiceImpl implements OperationService {
 
 	@Autowired
 	private OperationDAO operationDAO;
+	
+	@Autowired
+	private EmailService emailService;
 
 	@Override
 	public List<Operation> getAllOperations() {
@@ -39,6 +42,7 @@ public class OperationServiceImpl implements OperationService {
 
 		removeDiacritics(operation);
 		operationDAO.persist(operation);
+		emailService.notifyOperationCreated(operation);
 	}
 
 	@Override
@@ -46,6 +50,7 @@ public class OperationServiceImpl implements OperationService {
 
 		removeDiacritics(operation);
 		operationDAO.merge(operation);
+		emailService.notifyOperationUpdated(operation);
 	}
 
 	/**

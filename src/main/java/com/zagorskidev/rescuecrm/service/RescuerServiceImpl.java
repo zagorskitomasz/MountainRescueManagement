@@ -12,6 +12,7 @@ import com.zagorskidev.rescuecrm.utils.DataUtils;
 
 /**
  * Implementation of services related to rescuer bean.
+ * 
  * @author tomek
  *
  */
@@ -63,7 +64,9 @@ public class RescuerServiceImpl implements RescuerService {
 	}
 
 	/**
-	 * Transfers data from incoming rescuer object to object mapped from DB with same id.
+	 * Transfers data from incoming rescuer object to object mapped from DB with
+	 * same id.
+	 * 
 	 * @param rescuer
 	 * @return
 	 */
@@ -81,8 +84,9 @@ public class RescuerServiceImpl implements RescuerService {
 	}
 
 	/**
-	 * Anonymize rescuer instead of deleting it,
-	 * so rescuer will be still shown in his operations, but with data like 'N/A' 
+	 * Anonymize rescuer instead of deleting it, so rescuer will be still shown in
+	 * his operations, but with data like 'N/A'
+	 * 
 	 * @param rescuer
 	 */
 	private void anonymize(Rescuer rescuer) {
@@ -99,17 +103,22 @@ public class RescuerServiceImpl implements RescuerService {
 	}
 
 	/**
-	 * Translate rescuer fields containing native diacritics to strings in English alphabet
+	 * Translate rescuer fields containing native diacritics to strings in English
+	 * alphabet
+	 * 
 	 * @param rescuer
 	 */
 	private void removeDiacritics(Rescuer rescuer) {
 
 		RescuerDetail rescuerDetail = rescuer.getRescuerDetail();
-		
+
 		rescuer.setFirstName(DataUtils.removeDiacritics(rescuer.getFirstName()));
 		rescuer.setLastName(DataUtils.removeDiacritics(rescuer.getLastName()));
-		rescuerDetail.setEmail(DataUtils.removeDiacritics(rescuerDetail.getEmail()));
-		rescuerDetail.setAddress(DataUtils.removeDiacritics(rescuerDetail.getAddress()));
+		
+		if (rescuerDetail != null) {
+			rescuerDetail.setEmail(DataUtils.removeDiacritics(rescuerDetail.getEmail()));
+			rescuerDetail.setAddress(DataUtils.removeDiacritics(rescuerDetail.getAddress()));
+		}
 	}
 
 	/**
