@@ -3,6 +3,7 @@ package com.zagorskidev.rescuecrm.service;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,9 @@ public class EmailServiceImpl implements EmailService {
 
 	@Autowired
 	private MailSender mailSender;
+	
+	@Autowired
+	private Environment env;
 
 	@Autowired
 	private HttpSession session;
@@ -63,7 +67,7 @@ public class EmailServiceImpl implements EmailService {
 		msg.setSubject(message);
 		msg.setText("You can see your operation here: " + operationUrl);
 		msg.setTo(userEmail);
-		msg.setFrom("zagorskitomasz@gmail.com");
+		msg.setFrom(env.getProperty("rescue_mail"));
 		
 		return msg;
 	}

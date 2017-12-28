@@ -35,7 +35,7 @@ public class RescueCRM {
 		mailSender.setHost("smtp.sendgrid.net");
 		mailSender.setPort(587);
 		mailSender.setUsername("apikey");
-		mailSender.setPassword("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");
+		mailSender.setPassword(env.getProperty("sendgrid_password"));
 		return mailSender;
 	}
 }
