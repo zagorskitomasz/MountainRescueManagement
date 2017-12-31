@@ -1,5 +1,6 @@
 package com.zagorskidev.rescuecrm.service;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Consumer;
@@ -24,6 +25,9 @@ public class RescuerServiceImpl implements RescuerService {
 
 	@Autowired
 	private RescuerDAO rescuerDAO;
+	
+	@Autowired
+	private OperationService operationService;
 
 	@Override
 	public List<Rescuer> getAllRescuers() {
@@ -184,7 +188,11 @@ public class RescuerServiceImpl implements RescuerService {
 		List<Rescuer> candidates = getAvailableRescuers();
 		List<Rescuer> involvedRescuers = prepareInvolvedRescuers(operation);
 		
+		involvedRescuers.removeIf(rescuer -> candidates.contains(rescuer));
+		
 		candidates.addAll(involvedRescuers);
+		
+		cleanList(candidates);
 		
 		return candidates;
 	}
@@ -196,12 +204,53 @@ public class RescuerServiceImpl implements RescuerService {
 	 */
 	private List<Rescuer> prepareInvolvedRescuers(Operation operation) {
 		
-		List<Rescuer> involvedRescuers = new LinkedList<>();
-		
-		involvedRescuers.addAll(operation.getRescuers());
-		involvedRescuers.removeIf(rescuer -> rescuer.getId() < 1);
+		List<Rescuer> tempRescuers = prepareIdOnlyInvolvedRescuers(operation);
+
+		List<Rescuer> involvedRescuers = new ArrayList<>();
+		tempRescuers.forEach(rescuer -> involvedRescuers.add(getRescuerById(rescuer.getId())));
 		
 		return involvedRescuers;
+	}
+
+	private List<Rescuer> prepareIdOnlyInvolvedRescuers(Operation operation) {
+		
+		List<Rescuer> tempRescuers = new ArrayList<>();
+		
+		addFromStraightOperation(operation, tempRescuers);
+		addFromDbOperation(operation, tempRescuers);
+		
+		cleanList(tempRescuers);
+		
+		return tempRescuers;
+	}
+
+	private void addFromStraightOperation(Operation operation, List<Rescuer> tempRescuers) {
+		
+		tempRescuers.addAll(operation.getRescuers());
+	}
+
+	private void addFromDbOperation(Operation operation, List<Rescuer> tempRescuers) {
+		
+		Operation dbOperation = operationService.getOperationById(operation.getId());
+		if(dbOperation != null && dbOperation != operation)
+			addFromStraightOperation(dbOperation, tempRescuers);
+	}
+
+	private void cleanList(List<Rescuer> tempRescuers) {
+		
+		removeDuplicates(tempRescuers);
+		tempRescuers.removeIf(rescuer -> rescuer.getId() < 1);
+	}
+
+	private void removeDuplicates(List<Rescuer> tempRescuers) {
+		
+		for(int i=0; i<tempRescuers.size(); i++) {
+			for(int j=0; j<tempRescuers.size(); j++) {
+				
+				if(i!=j && tempRescuers.get(i).getId()==tempRescuers.get(j).getId() && tempRescuers.get(i).getId()!=0)
+					tempRescuers.get(i).setId(0);
+			}
+		}
 	}
 	
 	/**
