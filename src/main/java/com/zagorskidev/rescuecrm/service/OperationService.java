@@ -12,10 +12,14 @@ import com.zagorskidev.rescuecrm.entity.Operation;
 public interface OperationService {
 
 	public List<Operation> getAllOperations();
+	public List<Operation> getRunningOperations();
+	public List<Operation> getFinishedOperations();
+	
 	public Operation getOperationById(int id);
 	public void addOperation(Operation operation);
 	public void updateOperation(Operation operation);
 	public void removeOperation(int id);
+	public void finishOperation(int id);
 	
 	/**
 	 * Empty operation contains list of empty rescuers and is used for taking data from JSP view.

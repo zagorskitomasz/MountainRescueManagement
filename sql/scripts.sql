@@ -1,8 +1,4 @@
-DROP SCHEMA IF EXISTS rescuecrm;
-
-CREATE SCHEMA rescuecrm;
-
-use rescuecrm;
+use `heroku_5c0eab382ed98b6`;
 
 SET FOREIGN_KEY_CHECKS = 0;
 
@@ -23,6 +19,7 @@ CREATE TABLE rescuer (
   first_name varchar(45) DEFAULT NULL,
   last_name varchar(45) DEFAULT NULL,
   rescuer_detail_id int(11) DEFAULT NULL,
+  state varchar(45) DEFAULT NULL,
   PRIMARY KEY (id),
   KEY FK_DETAIL_idx (rescuer_detail_id),
   CONSTRAINT FK_DETAIL FOREIGN KEY (rescuer_detail_id) 
@@ -43,11 +40,14 @@ CREATE TABLE operation (
   id int(11) NOT NULL AUTO_INCREMENT,
   destination varchar(100) DEFAULT NULL,
   operation_detail_id int(11) DEFAULT NULL,
+  state varchar(45) DEFAULT NULL,
   PRIMARY KEY (id),
   KEY FK_OPDETAIL_idx (operation_detail_id),
   CONSTRAINT FK_OPDETAIL FOREIGN KEY (operation_detail_id) 
   REFERENCES operation_detail (id) ON DELETE NO ACTION ON UPDATE NO ACTION
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+drop table if exists operation_rescuer;
 
 CREATE TABLE operation_rescuer (
   operation_id int(11) NOT NULL,

@@ -28,7 +28,7 @@ public class RescuerDAOImpl extends AbstractDAO<Rescuer> implements RescuerDAO {
 		
 		EntityManager entityManager = getEntityManager();
 		Query query = entityManager
-				.createQuery("from Rescuer order by lastName, firstName", Rescuer.class);
+				.createQuery("from Rescuer order by state, lastName, firstName", Rescuer.class);
 		
 		return query.getResultList();
 	}

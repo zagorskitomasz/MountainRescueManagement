@@ -15,6 +15,7 @@
     	
     	<form:form class="form-horizontal" action="/operation/save" modelAttribute="operation" method="POST">
 			<form:hidden path="id"/>
+			<form:hidden path="state"/>
 			<div class="form-group">
    				<label class="col-sm-2 control-label">Destination</label>
     			<div class="col-sm-4">

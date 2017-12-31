@@ -38,7 +38,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/", 
 			"/home", 
 			"/rescuer/all", 
+			"/rescuer/available", 
+			"/rescuer/busy", 
 			"/operation/all", 
+			"/operation/running", 
+			"/operation/finished", 
 			"/login", 
 			"/registration",
 			"/register",
@@ -49,18 +53,19 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/rescuer/operations", 
 			"/rescuer/add",
 			"/rescuer/save",
-			"/operation/details",
-			"/operation/create",
-			"/operation/save",
-			"/loginSuccess"};
-	
-	private String[] adminZone = { 
 			"/rescuer/update",
 			"/rescuer/delete",
 			"/rescuer/deleteConfirmation",
+			"/operation/details",
+			"/operation/create",
+			"/operation/save",
 			"/operation/update",
 			"/operation/delete",
-			"/operation/deleteConfirmation"};
+			"/operation/deleteConfirmation",
+			"/operation/finish",
+			"/loginSuccess"};
+	
+	private String[] adminZone = {};
 	
 	/**
 	 * Configuration of auth manager

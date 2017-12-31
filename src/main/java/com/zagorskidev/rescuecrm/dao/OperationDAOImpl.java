@@ -28,7 +28,7 @@ public class OperationDAOImpl extends AbstractDAO<Operation> implements Operatio
 		
 		EntityManager entityManager = getEntityManager();
 		Query query = entityManager
-				.createQuery("from Operation order by id desc", Operation.class);
+				.createQuery("from Operation order by state desc, id desc", Operation.class);
 		
 		return query.getResultList();
 	}

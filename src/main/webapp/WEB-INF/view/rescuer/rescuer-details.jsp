@@ -47,6 +47,10 @@
 							<td><p class="text-right">Email</p></td>
 							<td><Strong>${rescuer.rescuerDetail.email}</Strong></td>
 						</tr>
+						<tr>
+							<td><p class="text-right">State</p></td>
+							<td><Strong>${rescuer.state}</Strong></td>
+						</tr>
 						
     				</tbody>
  				</table>

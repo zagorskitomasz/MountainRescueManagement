@@ -48,6 +48,9 @@ public class Rescuer {
 	@Valid
 	private RescuerDetail rescuerDetail;
 	
+	@Column(name="state")
+	private String state;
+	
 	@ManyToMany(cascade= {},
 			fetch=FetchType.EAGER)
 	@JoinTable(name="operation_rescuer",
@@ -110,6 +113,26 @@ public class Rescuer {
 		this.operations = operations;
 	}
 	
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	public boolean isAvailable() {
+		return "Available".equals(state);
+	}
+	
+	public void setAvailable() {
+		this.state = "Available";
+	}
+	
+	public void setBusy() {
+		this.state = "Busy";
+	}
+
 	@Override
 	public String toString() {
 		

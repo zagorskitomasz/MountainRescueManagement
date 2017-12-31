@@ -18,6 +18,8 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Show Rescuers<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/rescuer/all">All</a></li>
+                <li><a href="/rescuer/available">Available</a></li>
+                <li><a href="/rescuer/busy">Busy</a></li>
               </ul>
             </li>
             <li><a href="/rescuer/add">Add Rescuer</a></li>
@@ -25,6 +27,8 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Show Operations<span class="caret"></span></a>
               <ul class="dropdown-menu">
                 <li><a href="/operation/all">All</a></li>
+                <li><a href="/operation/running">Running</a></li>
+                <li><a href="/operation/finished">Finished</a></li>
               </ul>
             </li>
             <li><a href="/operation/create">Create Operation</a></li>

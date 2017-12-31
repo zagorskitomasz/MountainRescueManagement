@@ -18,6 +18,7 @@
     					<tr>
     						<th>Destination</th>
     						<th>Description</th>
+    						<th>State</th>
     						<th>Actions</th>
     					</tr>
     				</thead>
@@ -36,15 +37,26 @@
 					<c:param name="operationId" value="${operation.id}" />
 					</c:url>
 					
+    				<c:url var="finishLink" value="/operation/finish">
+					<c:param name="operationId" value="${operation.id}" />
+					</c:url>
+					
     					<tr>
     						<td>${operation.destination }</td>
     						<td>${operation.operationDetail.description }</td>
+    						<td>${operation.state }</td>
     						
     						<td><div class="btn-group" role="group" aria-label="...">
     						<button type="button" class="btn btn-success " onclick="location.href='${detailsLink}'">Details</button>
     						<button type="button" class="btn btn-warning " onclick="location.href='${updateLink}'">Update</button>
     						<button type="button" class="btn btn-danger " onclick="location.href='${deleteLink}'">Delete</button>
-    						</div></td>
+    						</div>&nbsp;&nbsp;
+    						<c:choose>
+    							<c:when test="${operation.state=='Running' }">
+    								<button type="button" class="btn btn-primary " onclick="location.href='${finishLink}'">Finish</button>
+    							</c:when>
+    						</c:choose>
+    						</td>
     					</tr>
     				</c:forEach>
     				</tbody>

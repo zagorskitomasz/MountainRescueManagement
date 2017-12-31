@@ -1,11 +1,14 @@
 package com.zagorskidev.rescuecrm.service;
 
+import java.util.LinkedList;
 import java.util.List;
+import java.util.function.Consumer;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.zagorskidev.rescuecrm.dao.RescuerDAO;
+import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 import com.zagorskidev.rescuecrm.utils.DataUtils;
@@ -31,6 +34,24 @@ public class RescuerServiceImpl implements RescuerService {
 	}
 
 	@Override
+	public List<Rescuer> getAvailableRescuers() {
+		
+		List<Rescuer> rescuers = getAllRescuers();
+		rescuers.removeIf(rescuer -> !rescuer.isAvailable());
+		
+		return rescuers;
+	}
+
+	@Override
+	public List<Rescuer> getBusyRescuers() {
+		
+		List<Rescuer> rescuers = getAllRescuers();
+		rescuers.removeIf(rescuer -> rescuer.isAvailable());
+		
+		return rescuers;
+	}
+
+	@Override
 	public Rescuer getRescuerById(int id) {
 
 		return rescuerDAO.get(id);
@@ -39,6 +60,7 @@ public class RescuerServiceImpl implements RescuerService {
 	@Override
 	public void addRescuer(Rescuer rescuer) {
 
+		rescuer.setAvailable();
 		removeDiacritics(rescuer);
 		rescuerDAO.persist(rescuer);
 	}
@@ -76,6 +98,7 @@ public class RescuerServiceImpl implements RescuerService {
 
 		tempRescuer.setFirstName(rescuer.getFirstName());
 		tempRescuer.setLastName(rescuer.getLastName());
+		tempRescuer.setState(rescuer.getState());
 		tempRescuer.getRescuerDetail().setAddress(rescuer.getRescuerDetail().getAddress());
 		tempRescuer.getRescuerDetail().setPhone(rescuer.getRescuerDetail().getPhone());
 		tempRescuer.getRescuerDetail().setEmail(rescuer.getRescuerDetail().getEmail());
@@ -132,5 +155,66 @@ public class RescuerServiceImpl implements RescuerService {
 		rescuer.setRescuerDetail(rescuerDetail);
 
 		return rescuer;
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void makeRescuersBusy(List<Rescuer> rescuers) {
+		
+		invokeForAllRescuers(rescuers, Rescuer::setBusy);
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void makeRescuersAvailable(List<Rescuer> rescuers) {
+		
+		invokeForAllRescuers(rescuers, Rescuer::setAvailable);
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<Rescuer> prepareCandidates(Operation operation) {
+		
+		List<Rescuer> candidates = getAvailableRescuers();
+		List<Rescuer> involvedRescuers = prepareInvolvedRescuers(operation);
+		
+		candidates.addAll(involvedRescuers);
+		
+		return candidates;
+	}
+
+	/**
+	 * Creating list containing full Rescuer beans involved in operation.
+	 * @param operation
+	 * @return
+	 */
+	private List<Rescuer> prepareInvolvedRescuers(Operation operation) {
+		
+		List<Rescuer> involvedRescuers = new LinkedList<>();
+		
+		involvedRescuers.addAll(operation.getRescuers());
+		involvedRescuers.removeIf(rescuer -> rescuer.getId() < 1);
+		
+		return involvedRescuers;
+	}
+	
+	/**
+	 * Call method on every rescuer. Get from DB -> consume -> save in DB.
+	 * @param rescuers
+	 * @param action
+	 */
+	private void invokeForAllRescuers(List<Rescuer> rescuers, Consumer<? super Rescuer> action) {
+		
+		List<Rescuer> realRescuers = new LinkedList<>();
+		
+		rescuers.forEach(rescuer -> realRescuers.add(getRescuerById(rescuer.getId())));
+		realRescuers.forEach(action);
+		realRescuers.forEach(rescuer -> rescuerDAO.merge(rescuer));
 	}
 }

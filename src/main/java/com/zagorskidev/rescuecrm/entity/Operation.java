@@ -46,6 +46,9 @@ public class Operation {
 	@Valid
 	private OperationDetail operationDetail;
 	
+	@Column(name="state")
+	private String state;
+	
 	@ManyToMany(cascade= {},
 			fetch=FetchType.EAGER)
 	@JoinTable(name="operation_rescuer",
@@ -99,5 +102,25 @@ public class Operation {
 
 	public void setRescuers(List<Rescuer> rescuers) {
 		this.rescuers = rescuers;
+	}
+
+	public String getState() {
+		return state;
+	}
+
+	public void setState(String state) {
+		this.state = state;
+	}
+	
+	public boolean isRunning() {
+		return "Running".equals(state);
+	}
+	
+	public void setRunning() {
+		this.state = "Running";
+	}
+	
+	public void setFinished() {
+		this.state = "Finished";
 	}
 }

@@ -42,6 +42,24 @@ public class RescuerController {
 		return "rescuer/list-rescuers";
 	}
 
+	@GetMapping("/available")
+	public String showAvailableRescuers(Model model) {
+
+		List<Rescuer> rescuers = rescuerService.getAvailableRescuers();
+		model.addAttribute("rescuers", rescuers);
+
+		return "rescuer/list-rescuers";
+	}
+
+	@GetMapping("/busy")
+	public String showBusyRescuers(Model model) {
+
+		List<Rescuer> rescuers = rescuerService.getBusyRescuers();
+		model.addAttribute("rescuers", rescuers);
+
+		return "rescuer/list-rescuers";
+	}
+
 	@GetMapping("/details")
 	public String showDetails(@RequestParam("rescuerId") int id, Model model) {
 
@@ -104,7 +122,7 @@ public class RescuerController {
 	}
 
 	@GetMapping("/delete")
-	public String deleteRescuer(@RequestParam("rescuerId") int id, Model model) {
+	public String deleteRescuer(@RequestParam("rescuerId") int id) {
 
 		rescuerService.removeRescuer(id);
 

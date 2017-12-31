@@ -38,10 +38,39 @@ public class OperationController {
 	public String showAllOperations(Model model) {
 		
 		List<Operation> operations = operationService.getAllOperations();
-		model.addAttribute("operations", operations);
-		model.addAttribute("listTitle", "Rescue Operations List");
+		modelOperationsList(model, operations);
 		
 		return "operation/list-operations";
+	}
+	
+	@GetMapping("/running")
+	public String showRunningOperations(Model model) {
+		
+		List<Operation> operations = operationService.getRunningOperations();
+		modelOperationsList(model, operations);
+		
+		return "operation/list-operations";
+	}
+	
+	@GetMapping("/finished")
+	public String showFinishedOperations(Model model) {
+		
+		List<Operation> operations = operationService.getFinishedOperations();
+		modelOperationsList(model, operations);
+		
+		return "operation/list-operations";
+	}
+
+	/**
+	 * Adding prepared operations list to model
+	 * 
+	 * @param model
+	 * @param operations
+	 */
+	private void modelOperationsList(Model model, List<Operation> operations) {
+		
+		model.addAttribute("operations", operations);
+		model.addAttribute("listTitle", "Rescue Operations List");
 	}
 	
 	@GetMapping("/details")
@@ -94,7 +123,7 @@ public class OperationController {
 	}
 	
 	@GetMapping("/delete")
-	public String deleteOperation(@RequestParam("operationId") int id, Model model) {
+	public String deleteOperation(@RequestParam("operationId") int id) {
 
 		operationService.removeOperation(id);
 		
@@ -109,6 +138,14 @@ public class OperationController {
 		
 		return "operation/delete-operation-confirm";
 	}
+	
+	@GetMapping("/finish")
+	public String finishOperation(@RequestParam("operationId") int id) {
+		
+		operationService.finishOperation(id);
+		
+		return "redirect:/operation/all";
+	}
 
 	/**
 	 * Adds to model necessary beans for creating/updating operation form
@@ -118,7 +155,7 @@ public class OperationController {
 	 */
 	private void setOperationFormModel(Operation operation, Model model, String formTitle) {
 		
-		List<Rescuer> candidates = rescuerService.getAllRescuers();
+		List<Rescuer> candidates = rescuerService.prepareCandidates(operation);
 		
 		model.addAttribute("operation", operation);
 		model.addAttribute("candidates", candidates);
@@ -131,7 +168,7 @@ public class OperationController {
 	 */
 	private void sendOperationToService(Operation operation) {
 		
-		operation.getRescuers().removeIf(rescuer -> rescuer.getId()==0);
+		operation.getRescuers().removeIf(rescuer -> rescuer.getId() == 0);
 		
 		if(operation.getId()>0)
 			operationService.updateOperation(operation);
