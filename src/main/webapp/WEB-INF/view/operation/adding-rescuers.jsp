@@ -46,7 +46,7 @@
 				<c:forEach items="${operation.candidatesMap }" var="candidate" varStatus="loop">
 					<form:hidden path="candidatesMap['${loop.index }'].rescuer.id"/>
 					<div class="form-group">
-					<div class="col-sm-offset-2 col-sm-2">
+					<div class="col-sm-offset-2 col-sm-4">
 					<div class="checkbox">
 					<label>
 						<form:checkbox class="checkbox" path="candidatesMap['${loop.index }'].attached"/> <Strong>${candidate.rescuer}</Strong>				
