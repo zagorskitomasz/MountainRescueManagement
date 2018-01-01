@@ -63,6 +63,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 			"/operation/delete",
 			"/operation/deleteConfirmation",
 			"/operation/finish",
+			"/operation/addRescuers",
 			"/loginSuccess"};
 	
 	private String[] adminZone = {};

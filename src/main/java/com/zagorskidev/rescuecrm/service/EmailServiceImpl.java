@@ -31,7 +31,7 @@ public class EmailServiceImpl implements EmailService {
 	@Override
 	public void notifyOperationCreated(Operation operation) {
 
-		String message = "You successfully added rescue operation!";
+		String message = "You successfully created rescue operation!";
 		sendOperationNotification(operation, message);
 	}
 

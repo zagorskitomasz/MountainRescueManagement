@@ -156,14 +156,7 @@ public class OperationServiceImpl implements OperationService {
 		OperationDetail operationDetail = new OperationDetail();
 		operation.setOperationDetail(operationDetail);
 
-		createEmptyRescuersList(operation);
-
 		return operation;
-	}
-
-	private void createEmptyRescuersList(Operation operation) {
-		for (int i = 0; i < 3; i++)
-			operation.addRescuer(new Rescuer());
 	}
 
 	@Override

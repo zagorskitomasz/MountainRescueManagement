@@ -5,24 +5,24 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
-import com.zagorskidev.rescuecrm.entity.Rescuer;
+import com.zagorskidev.rescuecrm.utils.RescuerWithAttachedFlag;
 
 /**
  * Implements validation granting that list will contain at least one rescuer.
  * @author tomek
  *
  */
-public class AtLeastOneConstraintValidator implements ConstraintValidator<AtLeastOne, List<Rescuer>> {
+public class AtLeastOneConstraintValidator implements ConstraintValidator<AtLeastOne, List<RescuerWithAttachedFlag>> {
 
 	@Override
 	public void initialize(AtLeastOne atLeastOne) {
 	}
 
 	@Override
-	public boolean isValid(List<Rescuer> rescuers, ConstraintValidatorContext constraintValidatorContext) {
+	public boolean isValid(List<RescuerWithAttachedFlag> rescuers, ConstraintValidatorContext constraintValidatorContext) {
 
-		for(Rescuer rescuer : rescuers) {
-			if(rescuer.getId()>0)
+		for(RescuerWithAttachedFlag rescuer : rescuers) {
+			if(rescuer.isAttached())
 				return true;
 		}
 		return false;

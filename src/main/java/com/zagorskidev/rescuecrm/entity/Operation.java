@@ -19,9 +19,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import com.zagorskidev.rescuecrm.validation.AtLeastOne;
-import com.zagorskidev.rescuecrm.validation.UniqueList;
-
 /**
  * Mapping object represents rescue operation.
  * @author tomek
@@ -54,8 +51,6 @@ public class Operation {
 	@JoinTable(name="operation_rescuer",
 			joinColumns = @JoinColumn(name="operation_id"),
 			inverseJoinColumns = @JoinColumn(name="rescuer_id"))
-	@UniqueList
-	@AtLeastOne
 	private List<Rescuer> rescuers;
 	
 	public Operation() {}

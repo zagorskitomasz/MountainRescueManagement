@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
+import com.zagorskidev.rescuecrm.utils.RescuerWithAttachedFlag;
 
 /**
  * Grants services related to rescue operation.
@@ -45,4 +46,17 @@ public interface RescuerService {
 	 * @return
 	 */
 	public List<Rescuer> prepareCandidates(Operation operation);
+	
+	/**
+	 * Creates pseudo map with rescuers paired with flags marking their involvement in given operation.
+	 * @param operation
+	 * @return
+	 */
+	public List<RescuerWithAttachedFlag> prepareCandidatesMap(Operation operation);
+	
+	/**
+	 * Complete candidates data from DB.
+	 * @param candidatesMap
+	 */
+	public void updateCandidatesData(List<RescuerWithAttachedFlag> candidatesMap);
 }

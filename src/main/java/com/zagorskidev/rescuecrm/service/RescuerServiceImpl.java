@@ -13,6 +13,7 @@ import com.zagorskidev.rescuecrm.entity.Operation;
 import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.entity.RescuerDetail;
 import com.zagorskidev.rescuecrm.utils.DataUtils;
+import com.zagorskidev.rescuecrm.utils.RescuerWithAttachedFlag;
 
 /**
  * Implementation of services related to rescuer bean.
@@ -188,13 +189,45 @@ public class RescuerServiceImpl implements RescuerService {
 		List<Rescuer> candidates = getAvailableRescuers();
 		List<Rescuer> involvedRescuers = prepareInvolvedRescuers(operation);
 		
-		involvedRescuers.removeIf(rescuer -> candidates.contains(rescuer));
-		
 		candidates.addAll(involvedRescuers);
 		
-		cleanList(candidates);
+		sortCandidates(candidates);
 		
 		return candidates;
+	}
+	
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public List<RescuerWithAttachedFlag> prepareCandidatesMap(Operation operation) {
+		
+		List<Rescuer> candidates = prepareCandidates(operation);
+		List<RescuerWithAttachedFlag> candidatesMap = transferFromListToPseudoMap(operation, candidates);
+		
+		return candidatesMap;
+	}
+
+	private List<RescuerWithAttachedFlag> transferFromListToPseudoMap(Operation operation, List<Rescuer> candidates) {
+		
+		List<RescuerWithAttachedFlag> candidatesMap = new ArrayList<>();
+		
+		candidates.forEach(rescuer -> candidatesMap.add(
+				new RescuerWithAttachedFlag(rescuer, 
+						operation.getRescuers() != null && 
+						operation.getRescuers().contains(rescuer) ? 
+								true : false)));
+		return candidatesMap;
+	}
+
+	private void sortCandidates(List<Rescuer> candidates) {
+		
+		candidates.sort((a, b) -> {
+			if(a.getLastName().equals(b.getLastName()))
+				return a.getFirstName().compareTo(b.getFirstName());
+			else
+				return a.getLastName().compareTo(b.getLastName());
+		});
 	}
 
 	/**
@@ -209,6 +242,8 @@ public class RescuerServiceImpl implements RescuerService {
 		List<Rescuer> involvedRescuers = new ArrayList<>();
 		tempRescuers.forEach(rescuer -> involvedRescuers.add(getRescuerById(rescuer.getId())));
 		
+		operation.setRescuers(involvedRescuers);
+		
 		return involvedRescuers;
 	}
 
@@ -216,10 +251,7 @@ public class RescuerServiceImpl implements RescuerService {
 		
 		List<Rescuer> tempRescuers = new ArrayList<>();
 		
-		addFromStraightOperation(operation, tempRescuers);
 		addFromDbOperation(operation, tempRescuers);
-		
-		cleanList(tempRescuers);
 		
 		return tempRescuers;
 	}
@@ -232,25 +264,8 @@ public class RescuerServiceImpl implements RescuerService {
 	private void addFromDbOperation(Operation operation, List<Rescuer> tempRescuers) {
 		
 		Operation dbOperation = operationService.getOperationById(operation.getId());
-		if(dbOperation != null && dbOperation != operation)
+		if(dbOperation != null && dbOperation.getRescuers() != null)
 			addFromStraightOperation(dbOperation, tempRescuers);
-	}
-
-	private void cleanList(List<Rescuer> tempRescuers) {
-		
-		removeDuplicates(tempRescuers);
-		tempRescuers.removeIf(rescuer -> rescuer.getId() < 1);
-	}
-
-	private void removeDuplicates(List<Rescuer> tempRescuers) {
-		
-		for(int i=0; i<tempRescuers.size(); i++) {
-			for(int j=0; j<tempRescuers.size(); j++) {
-				
-				if(i!=j && tempRescuers.get(i).getId()==tempRescuers.get(j).getId() && tempRescuers.get(i).getId()!=0)
-					tempRescuers.get(i).setId(0);
-			}
-		}
 	}
 	
 	/**
@@ -265,5 +280,15 @@ public class RescuerServiceImpl implements RescuerService {
 		rescuers.forEach(rescuer -> realRescuers.add(getRescuerById(rescuer.getId())));
 		realRescuers.forEach(action);
 		realRescuers.forEach(rescuer -> rescuerDAO.merge(rescuer));
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void updateCandidatesData(List<RescuerWithAttachedFlag> candidatesMap) {
+		
+		candidatesMap.forEach(rescuerWithFlag -> 
+			rescuerWithFlag.setRescuer(getRescuerById(rescuerWithFlag.getRescuer().getId())));
 	}
 }

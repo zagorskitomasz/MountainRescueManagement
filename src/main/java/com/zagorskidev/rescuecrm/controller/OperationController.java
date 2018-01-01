@@ -15,9 +15,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.zagorskidev.rescuecrm.entity.Operation;
-import com.zagorskidev.rescuecrm.entity.Rescuer;
 import com.zagorskidev.rescuecrm.service.OperationService;
 import com.zagorskidev.rescuecrm.service.RescuerService;
+import com.zagorskidev.rescuecrm.utils.OperationWithMap;
+import com.zagorskidev.rescuecrm.utils.RescuerWithAttachedFlag;
 
 /**
  * Handles requests related to rescue operation CRUD operations
@@ -94,7 +95,44 @@ public class OperationController {
 	}
 	
 	@PostMapping("/save")
-	public String saveOperation(@Valid @ModelAttribute("operation") Operation operation, BindingResult bindingResult, Model model) {
+	public String saveOperation(@Valid @ModelAttribute("operation") OperationWithMap operationWithMap,
+			BindingResult bindingResult, Model model) {
+		
+		if(bindingResult.hasErrors()) {
+			
+			String formTitle = "Correct Form";
+			rescuerService.updateCandidatesData(operationWithMap.getCandidatesMap());
+			
+			model.addAttribute("operation", operationWithMap);
+			model.addAttribute("formTitle", formTitle);
+			
+			return "operation/adding-rescuers";
+		}
+		else {
+			Operation operation = operationWithMap.getOperation();
+			
+			buildRescuersListFromMap(operationWithMap.getCandidatesMap(), operation);
+			
+			sendOperationToService(operation);
+			
+			return "redirect:/operation/all";
+		}
+	}
+
+	/**
+	 * Builds persistable rescuers list from utility pseudo map.
+	 * @param rescuersMap
+	 * @param operation
+	 */
+	private void buildRescuersListFromMap(List<RescuerWithAttachedFlag> rescuersMap, Operation operation) {
+		
+		for(RescuerWithAttachedFlag rescuerFlagged : rescuersMap)
+			if(rescuerFlagged.isAttached())
+				operation.addRescuer(rescuerFlagged.getRescuer());
+	}
+	
+	@PostMapping("/addRescuers")
+	public String addRescuers(@Valid @ModelAttribute("operation") Operation operation, BindingResult bindingResult, Model model) {
 		
 		if(bindingResult.hasErrors()) {
 			
@@ -105,9 +143,10 @@ public class OperationController {
 			return "operation/operation-form";
 		}
 		else {
-			sendOperationToService(operation);
+			String formTitle = "Select Rescuers";
+			setAddRescuersModel(operation, model, formTitle);
 			
-			return "redirect:/operation/all";
+			return "operation/adding-rescuers";
 		}
 	}
 	
@@ -155,10 +194,22 @@ public class OperationController {
 	 */
 	private void setOperationFormModel(Operation operation, Model model, String formTitle) {
 		
-		List<Rescuer> candidates = rescuerService.prepareCandidates(operation);
-		
 		model.addAttribute("operation", operation);
-		model.addAttribute("candidates", candidates);
+		model.addAttribute("formTitle", formTitle);
+	}
+	
+	/**
+	 * Adds to model necessary beans for adding rescuers form
+	 * @param operation
+	 * @param model
+	 */
+	private void setAddRescuersModel(Operation operation, Model model, String formTitle) {
+		
+		List<RescuerWithAttachedFlag> candidates = rescuerService.prepareCandidatesMap(operation);
+		
+		OperationWithMap operationWithMap = new OperationWithMap(operation, candidates);
+		
+		model.addAttribute("operation", operationWithMap);
 		model.addAttribute("formTitle", formTitle);
 	}
 
@@ -167,8 +218,6 @@ public class OperationController {
 	 * @param operation
 	 */
 	private void sendOperationToService(Operation operation) {
-		
-		operation.getRescuers().removeIf(rescuer -> rescuer.getId() == 0);
 		
 		if(operation.getId()>0)
 			operationService.updateOperation(operation);
