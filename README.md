@@ -1,7 +1,8 @@
+# CRUD / Spring / security / JSP / Bootstrap / MySQL
+
 # Web application for mountain rescue operations management.
 Now it's simple but working prototype: https://mountainrescue.herokuapp.com/
 
-I'm going to continuously develop application (add new features) while keeping code as clean as possible and open for further extensions.
 
 # Features:
 - CRUD: rescuers and operations.
@@ -17,6 +18,3 @@ I'm going to continuously develop application (add new features) while keeping c
 - Hibernate
 - MySQL
 - Bootstrap
-
-# TODO:
-- further development
